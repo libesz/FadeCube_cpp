@@ -50,3 +50,7 @@ int FadeCube::Point::getZ() const {
 void FadeCube::Point::setZ(int z) {
 	this->z = z;
 }
+
+bool FadeCube::Point::operator ==(const Point& theOther) {
+	return (x == theOther.x) && (y == theOther.y) && (z == theOther.z);
+}

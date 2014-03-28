@@ -11,9 +11,9 @@
 
 namespace FadeCube {
 
-Snake::Snake(int newSpaceX, int newSpaceY, int newSpaceZ) :
-    spaceX(newSpaceX), spaceY(newSpaceY), spaceZ(newSpaceZ), d(
-        direction::FORWARD) {
+Snake::Snake(int newSpaceX, int newSpaceY, int newSpaceZ, int newSize) :
+    spaceX(newSpaceX), spaceY(newSpaceY), spaceZ(newSpaceZ),
+    d(Direction::FORWARD), size(newSize) {
 }
 
 Snake::~Snake() {
@@ -26,13 +26,48 @@ const std::vector<Point> Snake::render() const {
   return body;
 }
 
-void Snake::start(int x, int y, int z, direction d) {
-  body.push_back(Point(x, y, z, 255));
+void Snake::start(int newX, int newY, int newZ, Direction newD) {
+	d = newD;
+  body.push_back(Point(newX, newY, newZ, 255));
 }
 
-void Snake::move() {
-  auto tail = body.end();
-  body.push_back(Point(tail->getX()+1, tail->getY(), tail->getZ(), 255));
+Snake::MoveResult Snake::move() {
+  auto oldHead = body.back();
+  Point newHead(oldHead);
+
+  switch(d) {
+  case Snake::Direction::FORWARD:
+  	newHead.setY(newHead.getY()+1);
+  	break;
+  case Snake::Direction::BACKWARD:
+  	newHead.setY(newHead.getY()-1);
+  	break;
+  case Snake::Direction::LEFT:
+  	newHead.setX(newHead.getX()+1);
+  	break;
+  case Snake::Direction::RIGHT:
+  	newHead.setX(newHead.getX()-1);
+  	break;
+  case Snake::Direction::UP:
+  	newHead.setZ(newHead.getZ()+1);
+  	break;
+  case Snake::Direction::DOWN:
+  	newHead.setZ(newHead.getZ()-1);
+  	break;
+  }
+
+  if(newHead.getX() < 0 || newHead.getX() >= spaceX ||
+  	 newHead.getY() < 0 || newHead.getY() >=spaceY ||
+  	 newHead.getZ() < 0 || newHead.getZ() >= spaceZ) {
+  	return MoveResult::WALL;
+  }
+
+  body.push_back(newHead);
+  return MoveResult::OK;
+}
+
+void Snake::setDirection(Direction newD) {
+	d = newD;
 }
 
 } /* namespace FadeCube */

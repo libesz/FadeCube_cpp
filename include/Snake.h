@@ -15,7 +15,7 @@ namespace FadeCube {
 
 class Snake: public Renderable {
 public:
-  enum class direction{
+  enum class Direction{
     UP,
     DOWN,
     RIGHT,
@@ -23,18 +23,25 @@ public:
     FORWARD,
     BACKWARD
   };
+  enum class MoveResult {
+  	OK,
+  	WALL,
+  	TAIL
+  };
 private:
   int spaceX;
 	int spaceY;
 	int spaceZ;
 	std::vector<Point> body;
-	direction d;
+	Direction d;
+	int size;
 public:
-	Snake(int newSpaceX, int newSpaceY, int newSpaceZ);
+	Snake(int newSpaceX, int newSpaceY, int newSpaceZ, int newSize = 10);
 	virtual ~Snake();
 	const std::vector<Point> render() const;
-	void start(int x, int y, int z, direction d);
-	void move();
+	void start(int x, int y, int z, Direction d);
+	MoveResult move();
+	void setDirection(Direction newD);
 };
 
 } /* namespace FadeCube */

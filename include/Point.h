@@ -26,6 +26,7 @@ public:
 	void setY(int y);
 	int getZ() const;
 	void setZ(int z);
+	bool operator==(const Point &theOther);
 };
 
 } /* namespace FadeCube */
