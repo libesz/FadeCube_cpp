@@ -9,7 +9,7 @@
 
 namespace FadeCube {
 
-Point::Point(int newX, int newY, int newZ, int newBr) :
+Point::Point(int newX, int newY, int newZ, unsigned char newBr) :
     x(newX), y(newY), z(newZ), br(newBr) {
 }
 
@@ -19,11 +19,11 @@ Point::~Point() {
 
 } /* namespace FadeCube */
 
-int FadeCube::Point::getBr() const {
+unsigned char FadeCube::Point::getBr() const {
 	return br;
 }
 
-void FadeCube::Point::setBr(int br) {
+void FadeCube::Point::setBr(unsigned char br) {
 	this->br = br;
 }
 

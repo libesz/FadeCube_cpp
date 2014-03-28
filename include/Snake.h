@@ -8,27 +8,33 @@
 #ifndef SNAKE_H_
 #define SNAKE_H_
 
+#include <vector>
 #include <Renderable.h>
 
 namespace FadeCube {
 
 class Snake: public Renderable {
-	int spaceX;
+public:
+  enum class direction{
+    UP,
+    DOWN,
+    RIGHT,
+    LEFT,
+    FORWARD,
+    BACKWARD
+  };
+private:
+  int spaceX;
 	int spaceY;
 	int spaceZ;
+	std::vector<Point> body;
+	direction d;
 public:
-	enum class direction{
-		UP,
-		DOWN,
-		RIGHT,
-		LEFT,
-		FORWARD,
-		BACKWARD
-	};
 	Snake(int newSpaceX, int newSpaceY, int newSpaceZ);
 	virtual ~Snake();
 	const std::vector<Point> render() const;
 	void start(int x, int y, int z, direction d);
+	void move();
 };
 
 } /* namespace FadeCube */

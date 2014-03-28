@@ -11,21 +11,28 @@
 
 namespace FadeCube {
 
-Snake::Snake(int newSpaceX, int newSpaceY, int newSpaceZ):
-	spaceX(newSpaceX), spaceY(newSpaceY), spaceZ(newSpaceZ){
+Snake::Snake(int newSpaceX, int newSpaceY, int newSpaceZ) :
+    spaceX(newSpaceX), spaceY(newSpaceY), spaceZ(newSpaceZ), d(
+        direction::FORWARD) {
 }
 
 Snake::~Snake() {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
 const std::vector<Point> Snake::render() const {
-	throw std::logic_error("Snake is not placed yet.");
-	std::vector<Point> result;
-	return result;
+  if (!body.size())
+    throw std::logic_error("Snake is not started.");
+  return body;
 }
 
 void Snake::start(int x, int y, int z, direction d) {
+  body.push_back(Point(x, y, z, 255));
+}
+
+void Snake::move() {
+  auto tail = body.end();
+  body.push_back(Point(tail->getX()+1, tail->getY(), tail->getZ(), 255));
 }
 
 } /* namespace FadeCube */

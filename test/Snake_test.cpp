@@ -16,10 +16,22 @@ TEST(SnakeTest, TestCreateAndThrowsBeforeStarted) {
 	EXPECT_THROW(s.render(), std::logic_error );
 }
 
-TEST(SnakeTest, TestStartable) {
+TEST(SnakeTest, TestSizeIsOneAfterStarted) {
 	Snake s(10,10,10);
 	s.start(0, 0, 0, Snake::direction::FORWARD);
-	/* TODO: render snake and check that it is 1 long */
+  std::vector<Point> p = s.render();
+  EXPECT_EQ(1, p.size());
+  EXPECT_EQ(0, p.begin()->getX());
+  EXPECT_EQ(0, p.begin()->getY());
+  EXPECT_EQ(0, p.begin()->getZ());
+  EXPECT_EQ(255, p.begin()->getBr());
 }
 
+TEST(SnakeTest, TestMove) {
+  Snake s(10,10,10);
+  s.start(0, 0, 0, Snake::direction::FORWARD);
+  s.move();
+  std::vector<Point> p = s.render();
+  EXPECT_EQ(2, p.size());
+}
 } /* namespace FadeCube */

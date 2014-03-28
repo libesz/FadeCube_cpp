@@ -14,12 +14,12 @@ class Point {
 	int x;
 	int y;
 	int z;
-	int br;
+	unsigned char br;
 public:
-  Point(int newX, int newY, int newZ, int newBr);
+  Point(int newX, int newY, int newZ, unsigned char newBr);
 	virtual ~Point();
-	int getBr() const;
-	void setBr(int br);
+	unsigned char getBr() const;
+	void setBr(unsigned char br);
 	int getX() const;
 	void setX(int x);
 	int getY() const;
