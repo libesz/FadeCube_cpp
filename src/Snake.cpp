@@ -57,9 +57,15 @@ Snake::MoveResult Snake::move() {
   }
 
   if(newHead.getX() < 0 || newHead.getX() >= spaceX ||
-  	 newHead.getY() < 0 || newHead.getY() >=spaceY ||
+  	 newHead.getY() < 0 || newHead.getY() >= spaceY ||
   	 newHead.getZ() < 0 || newHead.getZ() >= spaceZ) {
   	return MoveResult::WALL;
+  }
+
+  for(auto bodyPiece: body) {
+    if(bodyPiece == newHead) {
+      return MoveResult::TAIL;
+    }
   }
 
   body.push_back(newHead);
@@ -68,6 +74,10 @@ Snake::MoveResult Snake::move() {
 
 void Snake::setDirection(Direction newD) {
 	d = newD;
+}
+
+Point FadeCube::Snake::getHead() const {
+  return body.back();
 }
 
 } /* namespace FadeCube */

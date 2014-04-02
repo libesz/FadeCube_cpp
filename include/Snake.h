@@ -42,6 +42,7 @@ public:
 	void start(int x, int y, int z, Direction d);
 	MoveResult move();
 	void setDirection(Direction newD);
+	Point getHead() const;
 };
 
 } /* namespace FadeCube */

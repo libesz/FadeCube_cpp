@@ -12,8 +12,15 @@
 namespace FadeCube {
 
 TEST(SnakeTest, TestCreateAndThrowsBeforeStarted) {
-	Snake s(10,10,10);
-	EXPECT_THROW(s.render(), std::logic_error );
+  Snake s(10,10,10);
+  EXPECT_THROW(s.render(), std::logic_error );
+}
+
+TEST(SnakeTest, TestGetHead) {
+  Snake s(10,10,10);
+  s.start(0, 0, 0, Snake::Direction::FORWARD);
+  s.move();
+  EXPECT_TRUE(Point(0,1,0,0) == s.getHead());
 }
 
 TEST(SnakeTest, TestSizeIsOneAfterStarted) {
@@ -79,6 +86,17 @@ TEST(SnakeTest, TestCrashToWall) {
   EXPECT_EQ(Snake::MoveResult::OK, s.move());
   EXPECT_EQ(Snake::MoveResult::WALL, s.move());
 }
-/* TODO: test catch own tail */
+
+TEST(SnakeTest, TestCatchTail) {
+  Snake s(3,3,3);
+  s.start(0, 0, 0, Snake::Direction::FORWARD);
+  EXPECT_EQ(Snake::MoveResult::OK, s.move());
+  s.setDirection(Snake::Direction::UP);
+  EXPECT_EQ(Snake::MoveResult::OK, s.move());
+  s.setDirection(Snake::Direction::BACKWARD);
+  EXPECT_EQ(Snake::MoveResult::OK, s.move());
+  s.setDirection(Snake::Direction::DOWN);
+  EXPECT_EQ(Snake::MoveResult::TAIL, s.move());
+}
 
 } /* namespace FadeCube */

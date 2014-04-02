@@ -49,6 +49,12 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1202132446.1966444613" name="snake.cpp" rcbsApplicability="disable" resourcePath="snake.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.111595244.754675828">
+						<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.111595244.754675828" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.111595244"/>
+					</fileInfo>
+					<sourceEntries>
+						<entry excluding="snake.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+					</sourceEntries>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
@@ -172,6 +178,7 @@
 		<configuration configurationName="UT">
 			<resource resourceType="PROJECT" workspacePath="/cube"/>
 		</configuration>
+		<configuration configurationName="Snake"/>
 		<configuration configurationName="Debug">
 			<resource resourceType="PROJECT" workspacePath="/cube"/>
 		</configuration>
