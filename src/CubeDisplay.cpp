@@ -14,9 +14,9 @@
 
 namespace FadeCube {
 
-CubeDisplay::CubeDisplay() {
+CubeDisplay::CubeDisplay(std::string addr, unsigned short port) {
   cubeSocket = createUdpSocket();
-  cubeAddress = create_sockaddr("192.168.1.99", 1125);
+  cubeAddress = create_sockaddr(addr, port);
 }
 
 CubeDisplay::~CubeDisplay() {
@@ -31,53 +31,46 @@ int CubeDisplay::createUdpSocket() {
   return udp_socket;
 }
 
-struct sockaddr_in CubeDisplay::create_sockaddr( char *ip, unsigned short port ) {
+struct sockaddr_in CubeDisplay::create_sockaddr( std::string ip, unsigned short port ) {
   struct sockaddr_in address;
   memset(&(address.sin_zero), 0, sizeof(address.sin_zero));
 
   address.sin_family = AF_INET; // sets the server address to type AF_INET, similar to the socket we will use.
-  address.sin_addr.s_addr = inet_addr( ip ); // this sets the server address.
+  address.sin_addr.s_addr = inet_addr( ip.c_str() ); // this sets the server address.
   address.sin_port = htons( port );
   return address;
 }
 
-int CubeDisplay::sendFrameToCube( int client_socket, struct sockaddr_in cube_address, cube_frame_t *cube_frame ) const {
-  unsigned char packet_payload[251]; //create buffer
+void CubeDisplay::sendFrameToCube( unsigned char *packet_payload ) const {
+  if( sendto( cubeSocket, packet_payload, cubeDataSize, 0, ( struct sockaddr * ) &cubeAddress, sizeof( cubeAddress ) ) < 0 ) {
+    throw std::runtime_error("can't send data to cube");
+  }
+}
+
+void CubeDisplay::setLed( unsigned char *frame, Point p ) const {
+   unsigned short int index;
+   unsigned char inner_index, reversed_z = 9 - p.getZ();
+   index = ( reversed_z * 100 ) + ( p.getY() * 10 ) + p.getX(); //index in the 0-1023 range
+   inner_index = 2 * ( 3 - ( index % 4 ) ); //the inner-byte index (0-3)
+   index /= 4; //convert index to 0-250 range
+
+   if(index > cubeDataSize-1)
+     throw std::runtime_error("bad point coordinate");
+
+   frame[ index ] &= ~( 0b00000011 << inner_index ); //set the state of the coordinate to 0
+   frame[ index ] |= ( ( p.getBr() / 64 ) << inner_index ); //set the new value
+}
+
+void CubeDisplay::draw(const std::vector<Point> points) const {
+  unsigned char packet_payload[cubeDataSize]; //create buffer
   memset( packet_payload, 0, sizeof( packet_payload ) );
 
   packet_payload[0] = 1; //first byte is 1 -> means frame data for the cube
 
-  memcpy( &packet_payload[1], cube_frame->leds, 250 ); //copy the frame data to the buffer
-
-  if( sendto( client_socket, packet_payload, sizeof( packet_payload ), 0, ( struct sockaddr * ) &cube_address, sizeof( cube_address ) ) < 0 ) {
-    return -1;
-  }
-  return 1;
-}
-
-void CubeDisplay::setLed( cube_frame_t *frame, coord_t coordinate, unsigned char brightness ) const {
-   unsigned short int index;
-   unsigned char inner_index, reversed_z = 9 - coordinate.z;
-   index = ( reversed_z * 100 ) + ( coordinate.y * 10 ) + coordinate.x; //index in the 0-1023 range
-   inner_index = 2 * ( 3 - ( index % 4 ) ); //the inner-byte index (0-3)
-   index /= 4; //convert index to 0-250 range
-
-   frame->leds[ index ] &= ~( 0b00000011 << inner_index ); //set the state of the coordinate to 0
-   frame->leds[ index ] |= ( ( brightness & 3 ) << inner_index ); //set the new value
-}
-
-void CubeDisplay::draw(const std::vector<Point> points) const {
-  cube_frame_t frame;
-  memset( &frame, 0, sizeof( frame ) );
-
   for(auto p: points) {
-    coord_t c;
-    c.x = p.getX();
-    c.y = p.getY();
-    c.z = p.getZ();
-    setLed(&frame, c, p.getBr());
+    setLed(&packet_payload[1], p);
   }
-  sendFrameToCube(cubeSocket, cubeAddress, &frame);
+  sendFrameToCube(packet_payload);
 }
 
 } /* namespace FadeCube */
