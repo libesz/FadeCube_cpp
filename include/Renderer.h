@@ -19,7 +19,7 @@ class Renderer {
 public:
   Renderer(Display* newD);
   void draw(const std::vector<Renderable *> objects) const;
-	virtual ~Renderer();
+  virtual ~Renderer();
 };
 
 } /* namespace FadeCube */

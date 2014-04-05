@@ -79,6 +79,33 @@ TEST(SnakeTest, TestDirectionChange) {
 
 }
 
+TEST(SnakeTest, TestNothingHappensOnOppositeDirectionFB) {
+  Snake s(3,3,3);
+  s.start(0, 0, 0, Snake::Direction::FORWARD);
+  s.move();
+  s.setDirection(Snake::Direction::BACKWARD);
+  s.move();
+  EXPECT_TRUE(Point(0,2,0,0) == s.getHead());
+}
+
+TEST(SnakeTest, TestNothingHappensOnOppositeDirectionUD) {
+  Snake s(3,3,3);
+  s.start(0, 0, 0, Snake::Direction::UP);
+  s.move();
+  s.setDirection(Snake::Direction::DOWN);
+  s.move();
+  EXPECT_TRUE(Point(0,0,2,0) == s.getHead());
+}
+
+TEST(SnakeTest, TestNothingHappensOnOppositeDirectionLR) {
+  Snake s(3,3,3);
+  s.start(0, 0, 0, Snake::Direction::LEFT);
+  s.move();
+  s.setDirection(Snake::Direction::RIGHT);
+  s.move();
+  EXPECT_TRUE(Point(2,0,0,0) == s.getHead());
+}
+
 TEST(SnakeTest, TestCrashToWall) {
   Snake s(3,3,3);
   s.start(0, 0, 0, Snake::Direction::FORWARD);

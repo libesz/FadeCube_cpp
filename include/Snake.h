@@ -35,6 +35,7 @@ private:
 	std::vector<Point> body;
 	Direction d;
 	int size;
+	Snake();
 public:
 	Snake(int newSpaceX, int newSpaceY, int newSpaceZ, int newSize = 10);
 	virtual ~Snake();

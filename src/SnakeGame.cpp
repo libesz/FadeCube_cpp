@@ -5,7 +5,7 @@
  *      Author: libesz
  */
 
-#include "/home/libesz/workspace/junkcode/cube/src/SnakeGame.h"
+#include <SnakeGame.h>
 
 namespace FadeCube {
 
