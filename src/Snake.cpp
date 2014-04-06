@@ -36,22 +36,22 @@ Snake::MoveResult Snake::move() {
   Point newHead(oldHead);
 
   switch (d) {
-  case Snake::Direction::FORWARD:
+  case Direction::FORWARD:
     newHead.setY(newHead.getY() + 1);
     break;
-  case Snake::Direction::BACKWARD:
+  case Direction::BACKWARD:
     newHead.setY(newHead.getY() - 1);
     break;
-  case Snake::Direction::LEFT:
+  case Direction::LEFT:
     newHead.setX(newHead.getX() + 1);
     break;
-  case Snake::Direction::RIGHT:
+  case Direction::RIGHT:
     newHead.setX(newHead.getX() - 1);
     break;
-  case Snake::Direction::UP:
+  case Direction::UP:
     newHead.setZ(newHead.getZ() + 1);
     break;
-  case Snake::Direction::DOWN:
+  case Direction::DOWN:
     newHead.setZ(newHead.getZ() - 1);
     break;
   }

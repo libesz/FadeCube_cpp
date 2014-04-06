@@ -10,19 +10,12 @@
 
 #include <vector>
 #include <Renderable.h>
+#include <Controllable.h>
 
 namespace FadeCube {
 
-class Snake: public Renderable {
+class Snake: public Renderable, public Controllable {
 public:
-  enum class Direction{
-    UP,
-    DOWN,
-    RIGHT,
-    LEFT,
-    FORWARD,
-    BACKWARD
-  };
   enum class MoveResult {
   	OK,
   	WALL,
