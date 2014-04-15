@@ -11,12 +11,13 @@
 namespace FadeCube {
 
 enum class Direction{
+  UNKNOWN,
   UP,
   DOWN,
   RIGHT,
   LEFT,
   FORWARD,
-  BACKWARD
+  BACKWARD,
 };
 
 class Controllable {

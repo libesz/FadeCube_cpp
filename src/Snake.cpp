@@ -54,6 +54,8 @@ Snake::MoveResult Snake::move() {
   case Direction::DOWN:
     newHead.setZ(newHead.getZ() - 1);
     break;
+  default:
+    break;
   }
 
   if (newHead.getX() < 0 || newHead.getX() >= spaceX
@@ -78,7 +80,8 @@ void Snake::setDirection(Direction newD) {
    || (newD == Direction::LEFT     && d == Direction::RIGHT)
    || (newD == Direction::RIGHT    && d == Direction::LEFT)
    || (newD == Direction::UP       && d == Direction::DOWN)
-   || (newD == Direction::DOWN     && d == Direction::UP)) {
+   || (newD == Direction::DOWN     && d == Direction::UP)
+   || (newD == Direction::UNKNOWN)) {
     return;
   }
   d = newD;

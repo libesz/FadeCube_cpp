@@ -15,8 +15,10 @@ namespace FadeCube {
 
 class KeyboardInput {
   Controllable *s;
-  std::mutex protectCancel;
-  bool cancelled;
+  int cancelPipe[2];
+
+  Direction getDirectionFromChar(int ch);
+
 public:
   KeyboardInput(Controllable *newS);
   void cancel();

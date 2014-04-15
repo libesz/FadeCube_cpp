@@ -10,58 +10,67 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <mutex>
+#include <fcntl.h>
 
 namespace FadeCube {
 
-KeyboardInput::KeyboardInput(Controllable *newS): s(newS), cancelled(false) {
-  // TODO Auto-generated constructor stub
-
+KeyboardInput::KeyboardInput(Controllable *newS): s(newS) {
+  pipe(cancelPipe);
 }
 
 void KeyboardInput::cancel() {
-  protectCancel.lock();
-  cancelled = true;
-  protectCancel.unlock();
+  write(cancelPipe[1], " ", 1);
+}
+
+Direction KeyboardInput::getDirectionFromChar(int ch) {
+  Direction d = Direction::UNKNOWN;
+  switch (ch) {
+  case 'w':
+    d = Direction::FORWARD;
+    break;
+  case 's':
+    d = Direction::BACKWARD;
+    break;
+  case 'a':
+    d = Direction::LEFT;
+    break;
+  case 'd':
+    d = Direction::RIGHT;
+    break;
+  case '\'':
+    d = Direction::UP;
+    break;
+  case '/':
+    d = Direction::DOWN;
+    break;
+  }
+  return d;
 }
 
 void KeyboardInput::loop() {
-  while (1) {
-    struct termios oldt, newt;
-    int ch;
-    tcgetattr( STDIN_FILENO, &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~( ICANON | ECHO);
-    tcsetattr( STDIN_FILENO, TCSANOW, &newt);
-    ch = getchar();
-    tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
+  struct termios oldt, newt;
+  int ch;
 
-    Direction d = Direction::FORWARD;
-    switch (ch) {
-    case 'w':
-      d = Direction::FORWARD;
-      break;
-    case 's':
-      d = Direction::BACKWARD;
-      break;
-    case 'a':
-      d = Direction::LEFT;
-      break;
-    case 'd':
-      d = Direction::RIGHT;
-      break;
-    case '\'':
-      d = Direction::UP;
-      break;
-    case '/':
-      d = Direction::DOWN;
+  fd_set fds;
+
+  tcgetattr( STDIN_FILENO, &oldt);
+  newt = oldt;
+  newt.c_lflag &= ~( ICANON | ECHO);
+  tcsetattr( STDIN_FILENO, TCSANOW, &newt);
+
+  while (1) {
+    FD_ZERO(&fds);
+    FD_SET(cancelPipe[0], &fds);
+    FD_SET(STDIN_FILENO, &fds);
+    select(cancelPipe[0]+1, &fds, NULL, NULL, NULL);
+
+    if (FD_ISSET(cancelPipe[0], &fds)){
       break;
     }
-    s->setDirection(d);
-    protectCancel.lock();
-    if(cancelled)
-      return;
-    protectCancel.unlock();
+
+    s->setDirection(getDirectionFromChar(getchar()));
   }
+  tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
 }
 
 } /* namespace FadeCube */
