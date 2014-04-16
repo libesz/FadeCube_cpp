@@ -14,6 +14,9 @@ namespace FadeCube {
 Snake::Snake(int newSpaceX, int newSpaceY, int newSpaceZ, int newSize) :
     spaceX(newSpaceX), spaceY(newSpaceY), spaceZ(newSpaceZ), d(
         Direction::FORWARD), size(newSize) {
+#if ( DEBUG )
+  std::cout << "start: " << d << std::endl;
+#endif
 }
 
 Snake::~Snake() {
@@ -34,7 +37,9 @@ void Snake::start(int newX, int newY, int newZ, Direction newD) {
 Snake::MoveResult Snake::move() {
   auto oldHead = body.back();
   Point newHead(oldHead);
-
+#if ( DEBUG )
+  std::cout << "move: " << d << std::endl;
+#endif
   switch (d) {
   case Direction::FORWARD:
     newHead.setY(newHead.getY() + 1);
@@ -75,6 +80,11 @@ Snake::MoveResult Snake::move() {
 }
 
 void Snake::setDirection(Direction newD) {
+#if ( DEBUG )
+  std::cout << "setDirection old: " << d << std::endl;
+  std::cout << "setDirection new: " << newD << std::endl;
+#endif
+
   if ((newD == Direction::FORWARD  && d == Direction::BACKWARD)
    || (newD == Direction::BACKWARD && d == Direction::FORWARD)
    || (newD == Direction::LEFT     && d == Direction::RIGHT)

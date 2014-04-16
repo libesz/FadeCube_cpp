@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <mutex>
 #include <fcntl.h>
+#include <iostream>
+#include <Controllable.h>
 
 namespace FadeCube {
 
@@ -49,7 +51,6 @@ Direction KeyboardInput::getDirectionFromChar(int ch) {
 
 void KeyboardInput::loop() {
   struct termios oldt, newt;
-  int ch;
 
   fd_set fds;
 
@@ -67,7 +68,6 @@ void KeyboardInput::loop() {
     if (FD_ISSET(cancelPipe[0], &fds)){
       break;
     }
-
     s->setDirection(getDirectionFromChar(getchar()));
   }
   tcsetattr( STDIN_FILENO, TCSANOW, &oldt);

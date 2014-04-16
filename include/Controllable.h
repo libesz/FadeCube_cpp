@@ -8,6 +8,8 @@
 #ifndef CONTROLLABLE_H_
 #define CONTROLLABLE_H_
 
+#include <iostream>
+
 namespace FadeCube {
 
 enum class Direction{
@@ -19,6 +21,10 @@ enum class Direction{
   FORWARD,
   BACKWARD,
 };
+
+#if ( DEBUG )
+std::ostream& operator<<(std::ostream &out, const Direction &d);
+#endif
 
 class Controllable {
 public:
