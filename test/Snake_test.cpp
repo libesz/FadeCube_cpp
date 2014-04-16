@@ -24,14 +24,32 @@ TEST(SnakeTest, TestGetHead) {
 }
 
 TEST(SnakeTest, TestSizeIsOneAfterStarted) {
-	Snake s(10,10,10);
-	s.start(0, 0, 0, Direction::FORWARD);
+  Snake s(10,10,10);
+  s.start(0, 0, 0, Direction::FORWARD);
   std::vector<Point> p = s.render();
   EXPECT_EQ(1, p.size());
   EXPECT_EQ(0, p.begin()->getX());
   EXPECT_EQ(0, p.begin()->getY());
   EXPECT_EQ(0, p.begin()->getZ());
   EXPECT_EQ(255, p.begin()->getBr());
+}
+
+TEST(SnakeTest, TestTailIsMoving) {
+  Snake s(10,10,10, 2);
+  s.start(0, 0, 0, Direction::FORWARD);
+  s.move();
+  s.move();
+  std::vector<Point> p = s.render();
+  EXPECT_EQ(2, p.size());
+  EXPECT_TRUE(Point(0,1,0,0) == p[0]);
+  EXPECT_TRUE(Point(0,2,0,0) == p[1]);
+}
+
+TEST(SnakeTest, TestCreateThrowsWhenGivesCrazyConstParams) {
+  EXPECT_THROW(Snake s(10,10,10, 0), std::logic_error);
+  EXPECT_THROW(Snake s(0,10,10, 10), std::logic_error);
+  EXPECT_THROW(Snake s(10,0,10, 10), std::logic_error);
+  EXPECT_THROW(Snake s(10,10,0, 10), std::logic_error);
 }
 
 TEST(SnakeTest, TestMove) {
