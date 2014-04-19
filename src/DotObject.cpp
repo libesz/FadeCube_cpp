@@ -17,18 +17,6 @@ DotObject::~DotObject() {
 	// TODO Auto-generated destructor stub
 }
 
-void DotObject::moveAbsolute(int x, int y, int z) {
-	data.setX(x);
-	data.setY(y);
-	data.setZ(z);
-}
-
-void DotObject::moveRelative(int x, int y, int z) {
-	data.setX(x+data.getX());
-	data.setY(y+data.getY());
-	data.setZ(z+data.getZ());
-}
-
 const std::vector<Point> DotObject::render() const {
   std::vector<Point> result;
   result.push_back(data);

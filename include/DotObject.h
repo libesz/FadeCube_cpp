@@ -9,18 +9,14 @@
 #define DOTOBJECT_H_
 
 #include <Renderable.h>
-#include <Adjustable.h>
 
 namespace FadeCube {
 
-class DotObject: public Renderable, public Adjustable {
+class DotObject: public Renderable {
   Point data;
 public:
   DotObject(int newX, int newY, int newZ, int newBr);
-	void moveAbsolute(int x, int y, int z);
-	void moveRelative(int x, int y, int z);
-
-	virtual ~DotObject();
+  virtual ~DotObject();
   const std::vector<Point> render() const;
 };
 
