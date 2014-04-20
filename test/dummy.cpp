@@ -27,5 +27,6 @@ namespace FadeCube {
     void tickAll() {
       update();
     }
+    void loop() {}
   };
 }

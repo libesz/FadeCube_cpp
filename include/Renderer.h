@@ -11,14 +11,18 @@
 #include <vector>
 #include <Display.h>
 #include <Renderable.h>
+#include <Schedulable.h>
 
 namespace FadeCube {
 
-class Renderer {
+class Renderer: public Schedulable {
   Display *d;
+  std::vector<Renderable *> objects;
 public:
   Renderer(Display* newD);
-  void draw(const std::vector<Renderable *> objects) const;
+  void add(Renderable *object);
+  void draw() const;
+  void tick();
   virtual ~Renderer();
 };
 

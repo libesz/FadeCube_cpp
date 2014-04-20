@@ -22,6 +22,7 @@ public:
   void reg(Schedulable *s);
   void dereg(Schedulable *s);
   virtual ~ClockSource();
+  virtual void loop() = 0;
 };
 
 } /* namespace FadeCube */
