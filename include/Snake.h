@@ -11,33 +11,35 @@
 #include <vector>
 #include <Renderable.h>
 #include <Controllable.h>
+#include <Schedulable.h>
 
 namespace FadeCube {
 
-class Snake: public Renderable, public Controllable {
+class Snake: public Renderable, public Controllable, public Schedulable {
 public:
   enum class MoveResult {
-  	OK,
-  	WALL,
-  	TAIL
+    OK, WALL, TAIL
   };
 private:
   int spaceX;
-	int spaceY;
-	int spaceZ;
-	std::vector<Point> body;
-	Direction d;
-	unsigned int size;
-	Snake();
-	void checkInitValues();
+  int spaceY;
+  int spaceZ;
+  std::vector<Point> body;
+  Direction d;
+  unsigned int size;
+  MoveResult lastMoveResult;
+  Snake();
+  void checkInitValues();
+  MoveResult move();
 public:
-	Snake(int newSpaceX, int newSpaceY, int newSpaceZ, int newSize = 10);
-	virtual ~Snake();
-	const std::vector<Point> render() const;
-	void start(int x, int y, int z, Direction d);
-	MoveResult move();
-	void setDirection(Direction newD);
-	Point getHead() const;
+  Snake(int newSpaceX, int newSpaceY, int newSpaceZ, int newSize = 10);
+  virtual ~Snake();
+  const std::vector<Point> render() const;
+  void start(int x, int y, int z, Direction d);
+  void tick();
+  void setDirection(Direction newD);
+  MoveResult getLastMoveResult();
+  Point getHead() const;
 };
 
 } /* namespace FadeCube */

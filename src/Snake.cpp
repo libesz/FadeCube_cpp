@@ -12,8 +12,8 @@
 namespace FadeCube {
 
 Snake::Snake(int newSpaceX, int newSpaceY, int newSpaceZ, int newSize) :
-    spaceX(newSpaceX), spaceY(newSpaceY), spaceZ(newSpaceZ), d(
-        Direction::FORWARD), size(newSize) {
+    spaceX(newSpaceX), spaceY(newSpaceY), spaceZ(newSpaceZ),
+    d(Direction::FORWARD), size(newSize), lastMoveResult(MoveResult::OK) {
   checkInitValues();
 #if ( DEBUG )
   std::cout << "start: " << d << std::endl;
@@ -36,6 +36,9 @@ void Snake::start(int newX, int newY, int newZ, Direction newD) {
 }
 
 Snake::MoveResult Snake::move() {
+  if(lastMoveResult != MoveResult::OK)
+    return lastMoveResult;
+
   auto oldHead = body.back();
   Point newHead(oldHead);
 #if ( DEBUG )
@@ -105,8 +108,16 @@ void Snake::checkInitValues() {
     throw std::logic_error("invalid size passed");
 }
 
+void Snake::tick() {
+  lastMoveResult = move();
+}
+
 Point FadeCube::Snake::getHead() const {
   return body.back();
+}
+
+Snake::MoveResult FadeCube::Snake::getLastMoveResult() {
+  return lastMoveResult;
 }
 
 } /* namespace FadeCube */

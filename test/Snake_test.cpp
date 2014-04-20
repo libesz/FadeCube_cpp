@@ -19,7 +19,7 @@ TEST(SnakeTest, TestCreateAndThrowsBeforeStarted) {
 TEST(SnakeTest, TestGetHead) {
   Snake s(10,10,10);
   s.start(0, 0, 0, Direction::FORWARD);
-  s.move();
+  s.tick();
   EXPECT_TRUE(Point(0,1,0,0) == s.getHead());
 }
 
@@ -37,8 +37,8 @@ TEST(SnakeTest, TestSizeIsOneAfterStarted) {
 TEST(SnakeTest, TestTailIsMoving) {
   Snake s(10,10,10, 2);
   s.start(0, 0, 0, Direction::FORWARD);
-  s.move();
-  s.move();
+  s.tick();
+  s.tick();
   std::vector<Point> p = s.render();
   EXPECT_EQ(2, p.size());
   EXPECT_TRUE(Point(0,1,0,0) == p[0]);
@@ -55,7 +55,7 @@ TEST(SnakeTest, TestCreateThrowsWhenGivesCrazyConstParams) {
 TEST(SnakeTest, TestMove) {
   Snake s(10,10,10);
   s.start(0, 0, 0, Direction::FORWARD);
-  s.move();
+  s.tick();
   std::vector<Point> p = s.render();
   EXPECT_EQ(2, p.size());
 }
@@ -71,18 +71,18 @@ TEST(SnakeTest, TestDirectionChange) {
   Point p6(0,0,2,0);
   Point p7(0,0,1,0);
   s.start(0, 0, 0, Direction::FORWARD);
-  s.move();
+  s.tick();
   s.setDirection(Direction::LEFT);
-  s.move();
+  s.tick();
   s.setDirection(Direction::UP);
-  s.move();
-  s.move();
+  s.tick();
+  s.tick();
   s.setDirection(Direction::RIGHT);
-  s.move();
+  s.tick();
   s.setDirection(Direction::BACKWARD);
-  s.move();
+  s.tick();
   s.setDirection(Direction::DOWN);
-  s.move();
+  s.tick();
 
   std::vector<Point> p = s.render();
   Point pa = p[0];
@@ -100,48 +100,68 @@ TEST(SnakeTest, TestDirectionChange) {
 TEST(SnakeTest, TestNothingHappensOnOppositeDirectionFB) {
   Snake s(3,3,3);
   s.start(0, 0, 0, Direction::FORWARD);
-  s.move();
+  s.tick();
   s.setDirection(Direction::BACKWARD);
-  s.move();
+  s.tick();
   EXPECT_TRUE(Point(0,2,0,0) == s.getHead());
 }
 
 TEST(SnakeTest, TestNothingHappensOnOppositeDirectionUD) {
   Snake s(3,3,3);
   s.start(0, 0, 0, Direction::UP);
-  s.move();
+  s.tick();
   s.setDirection(Direction::DOWN);
-  s.move();
+  s.tick();
   EXPECT_TRUE(Point(0,0,2,0) == s.getHead());
 }
 
 TEST(SnakeTest, TestNothingHappensOnOppositeDirectionLR) {
   Snake s(3,3,3);
   s.start(0, 0, 0, Direction::LEFT);
-  s.move();
+  s.tick();
   s.setDirection(Direction::RIGHT);
-  s.move();
+  s.tick();
   EXPECT_TRUE(Point(2,0,0,0) == s.getHead());
 }
 
 TEST(SnakeTest, TestCrashToWall) {
   Snake s(3,3,3);
   s.start(0, 0, 0, Direction::FORWARD);
-  EXPECT_EQ(Snake::MoveResult::OK, s.move());
-  EXPECT_EQ(Snake::MoveResult::OK, s.move());
-  EXPECT_EQ(Snake::MoveResult::WALL, s.move());
+  s.tick();
+  EXPECT_EQ(Snake::MoveResult::OK, s.getLastMoveResult());
+  s.tick();
+  EXPECT_EQ(Snake::MoveResult::OK, s.getLastMoveResult());
+  s.tick();
+  EXPECT_EQ(Snake::MoveResult::WALL, s.getLastMoveResult());
 }
 
 TEST(SnakeTest, TestCatchTail) {
   Snake s(3,3,3);
   s.start(0, 0, 0, Direction::FORWARD);
-  EXPECT_EQ(Snake::MoveResult::OK, s.move());
+  s.tick();
+  EXPECT_EQ(Snake::MoveResult::OK, s.getLastMoveResult());
   s.setDirection(Direction::UP);
-  EXPECT_EQ(Snake::MoveResult::OK, s.move());
+  s.tick();
+  EXPECT_EQ(Snake::MoveResult::OK, s.getLastMoveResult());
   s.setDirection(Direction::BACKWARD);
-  EXPECT_EQ(Snake::MoveResult::OK, s.move());
+  s.tick();
+  EXPECT_EQ(Snake::MoveResult::OK, s.getLastMoveResult());
   s.setDirection(Direction::DOWN);
-  EXPECT_EQ(Snake::MoveResult::TAIL, s.move());
+  s.tick();
+  EXPECT_EQ(Snake::MoveResult::TAIL, s.getLastMoveResult());
+}
+
+TEST(SnakeTest, TestNotMovingAfterWallReached) {
+  Snake s(3,3,3);
+  s.start(0, 0, 0, Direction::FORWARD);
+  s.tick();
+  s.tick();
+  s.tick();
+  EXPECT_EQ(Snake::MoveResult::WALL, s.getLastMoveResult());
+  EXPECT_TRUE(Point(0,2,0,0) == s.getHead());
+  s.tick();
+  EXPECT_EQ(Snake::MoveResult::WALL, s.getLastMoveResult());
+  EXPECT_TRUE(Point(0,2,0,0) == s.getHead());
 }
 
 } /* namespace FadeCube */
