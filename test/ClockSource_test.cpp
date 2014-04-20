@@ -7,29 +7,10 @@
 
 #include <ClockSource.h>
 #include <Schedulable.h>
+#include "dummy.cpp"
 #include <gtest/gtest.h>
 
 namespace FadeCube {
-  class DummySchedulable: public Schedulable {
-    int tickCount;
-  public:
-    DummySchedulable(): tickCount(0) {
-    }
-    void tick() {
-      tickCount++;
-    }
-    int getTickCount() {
-      return tickCount;
-    }
-  };
-
-  class DummyClockSource: public ClockSource {
-  public:
-    void tickAll() {
-      update();
-    }
-  };
-
   TEST(ClockSourceTest, CreateAndReg) {
     DummySchedulable sch1, sch2;
     DummyClockSource cs;
