@@ -27,10 +27,11 @@ int main( int argc, char **argv ) {
   KeyboardInput k(&s);
   std::thread userInput(&KeyboardInput::loop, &k);
   re.draw(ra);
-  while(Snake::MoveResult::OK == s.move()) {
+  do {
     re.draw(ra);
     usleep(500000);
-  }
+    s.tick();
+  } while(Snake::MoveResult::OK == s.getLastMoveResult());
   k.cancel();
   userInput.join();
 }
