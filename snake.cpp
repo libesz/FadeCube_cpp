@@ -37,14 +37,14 @@ int main( int argc, char **argv ) {
   renderer.add(&s);
 
   s.start(0,0,0, Direction::FORWARD);
-  //KeyboardInput k(&s);
-  //std::thread userInput(&KeyboardInput::loop, &k);
+  KeyboardInput k(&s);
+  std::thread userInput(&KeyboardInput::loop, &k);
 
   SnakeExitCondition exit(&s);
   TimerClockSource clock(500000, &exit);
-  clock.reg(&s);
-  clock.reg(&renderer);
+  clock.add(&s);
+  clock.add(&renderer);
   clock.loop();
-  //k.cancel();
-  //userInput.join();
+  k.cancel();
+  userInput.join();
 }

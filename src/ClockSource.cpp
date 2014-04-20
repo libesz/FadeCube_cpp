@@ -15,7 +15,7 @@ ClockSource::ClockSource() {
 
 }
 
-void ClockSource::reg(Schedulable* s) {
+void ClockSource::add(Schedulable* s) {
   observers.push_back(s);
 }
 

@@ -19,7 +19,7 @@ protected:
   void update();
 public:
   ClockSource();
-  void reg(Schedulable *s);
+  void add(Schedulable *s);
   void dereg(Schedulable *s);
   virtual ~ClockSource();
   virtual void loop() = 0;
