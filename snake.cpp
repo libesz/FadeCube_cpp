@@ -6,6 +6,8 @@
  */
 
 #include <Snake.h>
+#include <SnakeFood.h>
+#include <ClockDivider.h>
 #include <CubeDisplay.h>
 #include <DisplayDumper.h>
 #include <Renderer.h>
@@ -30,11 +32,14 @@ public:
 
 int main( int argc, char **argv ) {
   Snake s(10,10,10);
-  //CubeDisplay d("192.168.1.99", 1125);
-  DisplayDumper d;
+  SnakeFood f;
+  ClockDivider foodDivider(10, &f);
+  CubeDisplay d("192.168.1.99", 1125);
+  //DisplayDumper d;
 
   Renderer renderer(&d);
   renderer.add(&s);
+  renderer.add(&f);
 
   s.start(0,0,0, Direction::FORWARD);
   KeyboardInput k(&s);
@@ -43,6 +48,7 @@ int main( int argc, char **argv ) {
   SnakeExitCondition exit(&s);
   TimerClockSource clock(500000, &exit);
   clock.add(&s);
+  clock.add(&foodDivider);
   clock.add(&renderer);
   clock.loop();
   k.cancel();
