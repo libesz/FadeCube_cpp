@@ -7,6 +7,7 @@
 
 #include <Snake.h>
 #include <SnakeFood.h>
+#include <SnakeController.h>
 #include <ClockDivider.h>
 #include <CubeDisplay.h>
 #include <DisplayDumper.h>
@@ -33,7 +34,8 @@ public:
 int main( int argc, char **argv ) {
   Snake s(10,10,10);
   SnakeFood f;
-  ClockDivider foodDivider(10, &f);
+  ClockDivider foodDivider(20, &f);
+  SnakeController c(&s,&f);
   CubeDisplay d("192.168.1.99", 1125);
   //DisplayDumper d;
 
@@ -49,6 +51,7 @@ int main( int argc, char **argv ) {
   TimerClockSource clock(500000, &exit);
   clock.add(&s);
   clock.add(&foodDivider);
+  clock.add(&c);
   clock.add(&renderer);
   clock.loop();
   k.cancel();

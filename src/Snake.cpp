@@ -121,3 +121,11 @@ Snake::MoveResult FadeCube::Snake::getLastMoveResult() {
 }
 
 } /* namespace FadeCube */
+
+unsigned int FadeCube::Snake::getSize() const {
+  return size;
+}
+
+void FadeCube::Snake::setSize(unsigned int size) {
+  this->size = size;
+}

@@ -7,6 +7,7 @@
 
 #include <SnakeFood.h>
 #include <ctime>
+#include <iostream>
 
 namespace FadeCube {
 

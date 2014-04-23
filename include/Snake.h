@@ -40,6 +40,8 @@ public:
   void setDirection(Direction newD);
   MoveResult getLastMoveResult();
   Point getHead() const;
+  unsigned int getSize() const;
+  void setSize(unsigned int size);
 };
 
 } /* namespace FadeCube */
