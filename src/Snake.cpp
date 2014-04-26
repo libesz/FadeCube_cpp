@@ -44,7 +44,7 @@ Snake::MoveResult Snake::move() {
 #if ( DEBUG )
   std::cout << "move: " << d << std::endl;
 #endif
-  switch (d) {
+  switch (getDirection()) {
   case Direction::FORWARD:
     newHead.setY(newHead.getY() + 1);
     break;
@@ -86,6 +86,7 @@ Snake::MoveResult Snake::move() {
 }
 
 void Snake::setDirection(Direction newD) {
+  std::lock_guard<std::mutex> lock(dLock);
 #if ( DEBUG )
   std::cout << "setDirection old: " << d << std::endl;
   std::cout << "setDirection new: " << newD << std::endl;
@@ -124,6 +125,11 @@ Snake::MoveResult FadeCube::Snake::getLastMoveResult() {
 
 unsigned int FadeCube::Snake::getSize() const {
   return size;
+}
+
+FadeCube::Direction FadeCube::Snake::getDirection() const {
+  std::lock_guard<std::mutex> lock(dLock);
+  return d;
 }
 
 void FadeCube::Snake::setSize(unsigned int size) {

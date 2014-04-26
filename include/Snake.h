@@ -9,6 +9,7 @@
 #define SNAKE_H_
 
 #include <vector>
+#include <mutex>
 #include <Renderable.h>
 #include <Controllable.h>
 #include <Schedulable.h>
@@ -26,6 +27,7 @@ private:
   int spaceZ;
   std::vector<Point> body;
   Direction d;
+  mutable std::mutex dLock;
   unsigned int size;
   MoveResult lastMoveResult;
   Snake();
@@ -42,6 +44,7 @@ public:
   Point getHead() const;
   unsigned int getSize() const;
   void setSize(unsigned int size);
+  Direction getDirection() const;
 };
 
 } /* namespace FadeCube */
