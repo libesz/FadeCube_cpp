@@ -14,13 +14,13 @@
 namespace FadeCube {
 
 class KeyboardInput {
-  Controllable *s;
+  Controllable &s;
   int cancelPipe[2];
 
   Direction getDirectionFromChar(int ch);
 
 public:
-  KeyboardInput(Controllable *newS);
+  KeyboardInput(Controllable &newS);
   void cancel();
   void loop();
 };

@@ -15,9 +15,9 @@ namespace FadeCube {
 class ClockDivider: public Schedulable {
   int d;
   int tickCount;
-  Schedulable *s;
+  Schedulable &s;
 public:
-  ClockDivider(int newDivider, Schedulable *newS);
+  ClockDivider(int newDivider, Schedulable &newS);
   virtual ~ClockDivider();
   void tick();
 };

@@ -11,15 +11,15 @@
 
 namespace FadeCube {
 TEST(ClockDividerTest, TestNormal) {
-  DummySchedulable *s = new DummySchedulable();
+  DummySchedulable s;
   ClockDivider cd(2, s);
   cd.tick();
   cd.tick();
-  EXPECT_EQ(1, s->getTickCount());
+  EXPECT_EQ(1, s.getTickCount());
 }
 
 TEST(ClockDividerTest, TestWithZero) {
-  DummySchedulable *s = new DummySchedulable();
+  DummySchedulable s;
   EXPECT_THROW(ClockDivider cd(0, s), std::logic_error);
 }
 

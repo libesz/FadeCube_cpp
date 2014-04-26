@@ -15,10 +15,10 @@
 namespace FadeCube {
 
 class SnakeController: public Schedulable {
-  Snake *snake;
-  SnakeFood *snakeFood;
+  Snake &snake;
+  SnakeFood &snakeFood;
 public:
-  SnakeController(Snake *newSnake, SnakeFood *newSnakeFood);
+  SnakeController(Snake &newSnake, SnakeFood &newSnakeFood);
   virtual ~SnakeController();
   void tick();
 };

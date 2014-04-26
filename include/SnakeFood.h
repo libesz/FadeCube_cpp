@@ -10,20 +10,22 @@
 
 #include <Renderable.h>
 #include <Schedulable.h>
-#include <DotObject.h>
+#include <Point.h>
 #include <random>
 
 namespace FadeCube {
 
 class SnakeFood: public Renderable, public Schedulable {
   std::mt19937 rng;
-  DotObject *foodPosition;
+  Point foodPosition;
   void createFood();
+  bool invisible;
 
 public:
   SnakeFood();
   virtual ~SnakeFood();
   const std::vector<Point> render() const;
+  void toogleInvisible();
   void tick();
 };
 

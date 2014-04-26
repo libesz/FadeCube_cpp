@@ -12,26 +12,34 @@
 namespace FadeCube {
 
 void SnakeFood::createFood() {
-  std::uniform_int_distribution<unsigned int> uint_dist10(0, 9);
-  foodPosition = new DotObject(uint_dist10(rng), uint_dist10(rng),
-                               uint_dist10(rng), 255);
+  std::uniform_int_distribution<int> uint_dist10(0, 9);
+  foodPosition.setX(uint_dist10(rng));
+  foodPosition.setY(uint_dist10(rng));
+  foodPosition.setZ(uint_dist10(rng));
 }
 
-SnakeFood::SnakeFood() {
+SnakeFood::SnakeFood(): foodPosition(0,0,0,255), invisible(false) {
   rng.seed(time(0));
   createFood();
 }
 
 SnakeFood::~SnakeFood() {
-  delete foodPosition;
 }
 
 const std::vector<Point> SnakeFood::render() const {
-  return foodPosition->render();
+  std::vector<Point> result;
+  Point pos = foodPosition;
+  if(invisible)
+    pos.setBr(0);
+  result.push_back(pos);
+  return result;
+}
+
+void SnakeFood::toogleInvisible() {
+  invisible = !invisible;
 }
 
 void SnakeFood::tick() {
-  delete foodPosition;
   createFood();
 }
 

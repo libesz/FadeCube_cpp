@@ -10,7 +10,7 @@
 
 namespace FadeCube {
 
-ClockDivider::ClockDivider(int newDivider, Schedulable* newS):
+ClockDivider::ClockDivider(int newDivider, Schedulable &newS):
                            d(newDivider), tickCount(0), s(newS) {
   if(d<=0)
     throw std::logic_error("can not divide clock with zero");
@@ -23,7 +23,7 @@ ClockDivider::~ClockDivider() {
 void ClockDivider::tick() {
   if(++tickCount == d) {
     tickCount = 0;
-    s->tick();
+    s.tick();
   }
 }
 

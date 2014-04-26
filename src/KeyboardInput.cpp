@@ -16,7 +16,7 @@
 
 namespace FadeCube {
 
-KeyboardInput::KeyboardInput(Controllable *newS): s(newS) {
+KeyboardInput::KeyboardInput(Controllable &newS): s(newS) {
   pipe(cancelPipe);
 }
 
@@ -68,7 +68,7 @@ void KeyboardInput::loop() {
     if (FD_ISSET(cancelPipe[0], &fds)){
       break;
     }
-    s->setDirection(getDirectionFromChar(getchar()));
+    s.setDirection(getDirectionFromChar(getchar()));
   }
   tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
 }

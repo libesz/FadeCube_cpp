@@ -9,7 +9,7 @@
 
 namespace FadeCube {
 
-SnakeController::SnakeController(Snake *newSnake, SnakeFood *newSnakeFood):
+SnakeController::SnakeController(Snake &newSnake, SnakeFood &newSnakeFood):
                                  snake(newSnake), snakeFood(newSnakeFood){
 }
 
@@ -18,10 +18,11 @@ SnakeController::~SnakeController() {
 }
 
 void SnakeController::tick() {
-  if(snake->getHead() == snakeFood->render()[0]) {
-    snake->setSize(snake->getSize()+1);
-    snakeFood->tick();
+  if(snake.getHead() == snakeFood.render()[0]) {
+    snake.setSize(snake.getSize()+1);
+    snakeFood.tick();
   }
+  snakeFood.toogleInvisible();
 }
 
 } /* namespace FadeCube */
