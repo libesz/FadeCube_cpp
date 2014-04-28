@@ -3,6 +3,7 @@ FadeCube cpp stuff
 
 Base library and demo apps for the FadeCube 10x10x10 Ledcube.
 It was originally written in C, now it is in C++11.
+Things are in separated Eclipse CDT projects.
 
 Contents:
 ---------
