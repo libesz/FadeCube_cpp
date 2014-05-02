@@ -9,6 +9,7 @@
 #define SNAKEFOOD_H_
 
 #include <Renderable.h>
+#include <CubeProp.h>
 #include <Schedulable.h>
 #include <Point.h>
 #include <random>
@@ -16,13 +17,14 @@
 namespace FadeCube {
 
 class SnakeFood: public Renderable, public Schedulable {
+  CubeProp cubeProp;
   std::mt19937 rng;
   Point foodPosition;
   void createFood();
   bool invisible;
 
 public:
-  SnakeFood();
+  SnakeFood(CubeProp newCubeProp);
   virtual ~SnakeFood();
   const std::vector<Point> render() const;
   void toogleInvisible();

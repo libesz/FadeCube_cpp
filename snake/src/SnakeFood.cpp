@@ -12,13 +12,15 @@
 namespace FadeCube {
 
 void SnakeFood::createFood() {
-  std::uniform_int_distribution<int> uint_dist10(0, 9);
-  foodPosition.setX(uint_dist10(rng));
-  foodPosition.setY(uint_dist10(rng));
-  foodPosition.setZ(uint_dist10(rng));
+  std::uniform_int_distribution<int> genX(0, cubeProp.getSpaceX());
+  std::uniform_int_distribution<int> genY(0, cubeProp.getSpaceY());
+  std::uniform_int_distribution<int> genZ(0, cubeProp.getSpaceZ());
+  foodPosition.setX(genX(rng));
+  foodPosition.setY(genY(rng));
+  foodPosition.setZ(genZ(rng));
 }
 
-SnakeFood::SnakeFood(): foodPosition(0,0,0,255), invisible(false) {
+SnakeFood::SnakeFood(CubeProp newCubeProp): cubeProp(newCubeProp), foodPosition(0,0,0,255), invisible(false) {
   rng.seed(time(0));
   createFood();
 }

@@ -6,25 +6,26 @@
  */
 
 #include <Snake.h>
+#include <CubeProp.h>
 #include <gtest/gtest.h>
 #include <stdexcept>
 
 namespace FadeCube {
 
 TEST(SnakeTest, TestCreateAndThrowsBeforeStarted) {
-  Snake s(10,10,10);
+  Snake s(CubeProp(10));
   EXPECT_THROW(s.render(), std::logic_error );
 }
 
 TEST(SnakeTest, TestGetHead) {
-  Snake s(10,10,10);
+  Snake s(CubeProp(10));
   s.start(0, 0, 0, Direction::FORWARD);
   s.tick();
   EXPECT_TRUE(Point(0,1,0,0) == s.getHead());
 }
 
 TEST(SnakeTest, TestSizeIsOneAfterStarted) {
-  Snake s(10,10,10);
+  Snake s(CubeProp(10));
   s.start(0, 0, 0, Direction::FORWARD);
   std::vector<Point> p = s.render();
   EXPECT_EQ(1, p.size());
@@ -35,7 +36,7 @@ TEST(SnakeTest, TestSizeIsOneAfterStarted) {
 }
 
 TEST(SnakeTest, TestTailIsMoving) {
-  Snake s(10,10,10, 2);
+  Snake s(CubeProp(10), 2);
   s.start(0, 0, 0, Direction::FORWARD);
   s.tick();
   s.tick();
@@ -46,14 +47,14 @@ TEST(SnakeTest, TestTailIsMoving) {
 }
 
 TEST(SnakeTest, TestCreateThrowsWhenGivesCrazyConstParams) {
-  EXPECT_THROW(Snake s(10,10,10, 0), std::logic_error);
-  EXPECT_THROW(Snake s(0,10,10, 10), std::logic_error);
-  EXPECT_THROW(Snake s(10,0,10, 10), std::logic_error);
-  EXPECT_THROW(Snake s(10,10,0, 10), std::logic_error);
+  EXPECT_THROW(Snake s(CubeProp(10, 10, 10), 0), std::logic_error);
+  EXPECT_THROW(Snake s(CubeProp(0, 10, 10), 10), std::logic_error);
+  EXPECT_THROW(Snake s(CubeProp(10, 0, 10), 10), std::logic_error);
+  EXPECT_THROW(Snake s(CubeProp(10, 10, 0), 10), std::logic_error);
 }
 
 TEST(SnakeTest, TestMove) {
-  Snake s(10,10,10);
+  Snake s(CubeProp(10, 10, 10));
   s.start(0, 0, 0, Direction::FORWARD);
   s.tick();
   std::vector<Point> p = s.render();
@@ -61,7 +62,7 @@ TEST(SnakeTest, TestMove) {
 }
 
 TEST(SnakeTest, TestDirectionChange) {
-  Snake s(10,10,10);
+  Snake s(CubeProp(10));
   Point p0(0,0,0,0);
   Point p1(0,1,0,0);
   Point p2(1,1,0,0);
@@ -98,7 +99,7 @@ TEST(SnakeTest, TestDirectionChange) {
 }
 
 TEST(SnakeTest, TestNothingHappensOnOppositeDirectionFB) {
-  Snake s(3,3,3);
+  Snake s(CubeProp(3));
   s.start(0, 0, 0, Direction::FORWARD);
   s.tick();
   s.setDirection(Direction::BACKWARD);
@@ -107,7 +108,7 @@ TEST(SnakeTest, TestNothingHappensOnOppositeDirectionFB) {
 }
 
 TEST(SnakeTest, TestNothingHappensOnOppositeDirectionUD) {
-  Snake s(3,3,3);
+  Snake s(CubeProp(3));
   s.start(0, 0, 0, Direction::UP);
   s.tick();
   s.setDirection(Direction::DOWN);
@@ -116,7 +117,7 @@ TEST(SnakeTest, TestNothingHappensOnOppositeDirectionUD) {
 }
 
 TEST(SnakeTest, TestNothingHappensOnOppositeDirectionLR) {
-  Snake s(3,3,3);
+  Snake s(CubeProp(3));
   s.start(0, 0, 0, Direction::LEFT);
   s.tick();
   s.setDirection(Direction::RIGHT);
@@ -125,7 +126,7 @@ TEST(SnakeTest, TestNothingHappensOnOppositeDirectionLR) {
 }
 
 TEST(SnakeTest, TestCrashToWall) {
-  Snake s(3,3,3);
+  Snake s(CubeProp(3));
   s.start(0, 0, 0, Direction::FORWARD);
   s.tick();
   EXPECT_EQ(Snake::MoveResult::OK, s.getLastMoveResult());
@@ -136,7 +137,7 @@ TEST(SnakeTest, TestCrashToWall) {
 }
 
 TEST(SnakeTest, TestCatchTail) {
-  Snake s(3,3,3);
+  Snake s(CubeProp(3));
   s.start(0, 0, 0, Direction::FORWARD);
   s.tick();
   EXPECT_EQ(Snake::MoveResult::OK, s.getLastMoveResult());
@@ -152,7 +153,7 @@ TEST(SnakeTest, TestCatchTail) {
 }
 
 TEST(SnakeTest, TestNotMovingAfterWallReached) {
-  Snake s(3,3,3);
+  Snake s(CubeProp(3));
   s.start(0, 0, 0, Direction::FORWARD);
   s.tick();
   s.tick();

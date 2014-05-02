@@ -13,6 +13,7 @@
 #include <Renderable.h>
 #include <Controllable.h>
 #include <Schedulable.h>
+#include <CubeProp.h>
 
 namespace FadeCube {
 
@@ -22,9 +23,7 @@ public:
     OK, WALL, TAIL
   };
 private:
-  int spaceX;
-  int spaceY;
-  int spaceZ;
+  CubeProp cubeProp;
   std::vector<Point> body;
   Direction d;
   mutable std::mutex dLock;
@@ -34,7 +33,7 @@ private:
   void checkInitValues();
   MoveResult move();
 public:
-  Snake(int newSpaceX, int newSpaceY, int newSpaceZ, int newSize = 10);
+  Snake(const CubeProp newCubeProp, int newSize = 10);
   virtual ~Snake();
   const std::vector<Point> render() const;
   void start(int x, int y, int z, Direction d);

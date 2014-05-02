@@ -8,12 +8,13 @@
 #include <Snake.h>
 #include <vector>
 #include <stdexcept>
+#include <CubeProp.h>
 
 namespace FadeCube {
 
-Snake::Snake(int newSpaceX, int newSpaceY, int newSpaceZ, int newSize) :
-    spaceX(newSpaceX), spaceY(newSpaceY), spaceZ(newSpaceZ),
-    d(Direction::FORWARD), size(newSize), lastMoveResult(MoveResult::OK) {
+Snake::Snake(const CubeProp newCubeProp, int newSize) :
+             cubeProp(newCubeProp), d(Direction::FORWARD),
+             size(newSize), lastMoveResult(MoveResult::OK) {
   checkInitValues();
 #if ( DEBUG )
   std::cout << "start: " << d << std::endl;
@@ -67,9 +68,9 @@ Snake::MoveResult Snake::move() {
     break;
   }
 
-  if (newHead.getX() < 0 || newHead.getX() >= spaceX
-   || newHead.getY() < 0 || newHead.getY() >= spaceY
-   || newHead.getZ() < 0 || newHead.getZ() >= spaceZ) {
+  if (newHead.getX() < 0 || newHead.getX() >= cubeProp.getSpaceX()
+   || newHead.getY() < 0 || newHead.getY() >= cubeProp.getSpaceY()
+   || newHead.getZ() < 0 || newHead.getZ() >= cubeProp.getSpaceZ()) {
     return MoveResult::WALL;
   }
 
@@ -105,7 +106,7 @@ void Snake::setDirection(Direction newD) {
 }
 
 void Snake::checkInitValues() {
-  if(spaceX<=0 || spaceY<=0 || spaceZ<=0 || size==0)
+  if(cubeProp.getSpaceX() <= 0 || cubeProp.getSpaceY() <= 0 || cubeProp.getSpaceZ() <= 0 || size == 0)
     throw std::logic_error("invalid size passed");
 }
 

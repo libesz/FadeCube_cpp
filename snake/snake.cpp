@@ -8,6 +8,7 @@
 #include <Snake.h>
 #include <SnakeFood.h>
 #include <SnakeController.h>
+#include <CubeProp.h>
 #include <ClockDivider.h>
 #include <CubeDisplay.h>
 #include <DisplayDumper.h>
@@ -32,9 +33,10 @@ public:
 };
 
 int main( int argc, char **argv ) {
-  Snake s(10,10,10);
-  ClockDivider snakeDivider(2, s);
-  SnakeFood f;
+  CubeProp prop(10);
+  Snake s(prop);
+  ClockDivider snakeDivider(1, s);
+  SnakeFood f(prop);
   ClockDivider foodDivider(40, f);
   SnakeController c(s, f);
   CubeDisplay d("192.168.1.99", 1125);
