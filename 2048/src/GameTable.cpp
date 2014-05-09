@@ -89,6 +89,8 @@ GameTable::GameTable(CubeProp newCubeProp, int newGridX, int newGridY) :
 }
 
 int GameTable::getSlotValue(int row, int col) const {
+  std::lock_guard<std::mutex> lock(sLock);
+
   return slots[row][col];
 }
 
@@ -104,6 +106,7 @@ void GameTable::checkValue(int value) {
 
 void GameTable::setSlotValue(int row, int col, int value) {
   checkValue(value);
+  std::lock_guard<std::mutex> lock(sLock);
   slots[row][col] = value;
 }
 
@@ -117,6 +120,7 @@ void GameTable::generateAtRandomEmptyPlace() {
   if (!emptySlots.size())
     throw std::runtime_error("no free place");
   std::uniform_int_distribution<int> genPlace(0, emptySlots.size() - 1);
+  std::lock_guard<std::mutex> lock(sLock);
   *emptySlots[genPlace(rng)] = validValues[0];
 }
 
@@ -129,6 +133,8 @@ int GameTable::getGridY() const {
 }
 
 bool GameTable::mergeDown() {
+  std::lock_guard<std::mutex> lock(sLock);
+
   int i;
   int j;
   int k;
@@ -169,6 +175,8 @@ bool GameTable::mergeDown() {
 }
 
 bool GameTable::mergeUp() {
+  std::lock_guard<std::mutex> lock(sLock);
+
   int i;
   int j;
   int k;
@@ -208,6 +216,8 @@ bool GameTable::mergeUp() {
 }
 
 bool GameTable::mergeLeft() {
+  std::lock_guard<std::mutex> lock(sLock);
+
   int i;
   int j;
   int k;
@@ -247,6 +257,8 @@ bool GameTable::mergeLeft() {
 }
 
 bool GameTable::mergeRight() {
+  std::lock_guard<std::mutex> lock(sLock);
+
   int i;
   int j;
   int k;
@@ -286,6 +298,8 @@ bool GameTable::mergeRight() {
 }
 
 bool GameTable::shiftDown() {
+  std::lock_guard<std::mutex> lock(sLock);
+
   int i;
   int j;
   unsigned k;
@@ -315,9 +329,11 @@ bool GameTable::shiftDown() {
 }
 
 bool GameTable::shiftUp() {
+  std::lock_guard<std::mutex> lock(sLock);
+
   int i;
   int j;
-  unsigned k;
+  int k;
   bool valid;
 
 // Shift tiles up the columns.
@@ -344,9 +360,11 @@ bool GameTable::shiftUp() {
 }
 
 bool GameTable::shiftLeft() {
+  std::lock_guard<std::mutex> lock(sLock);
+
   int i;
   int j;
-  unsigned k;
+  int k;
   bool valid;
 
 // Shift tiles left across the rows.
@@ -373,6 +391,8 @@ bool GameTable::shiftLeft() {
 }
 
 bool GameTable::shiftRight() {
+  std::lock_guard<std::mutex> lock(sLock);
+
   int i;
   int j;
   unsigned k;

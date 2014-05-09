@@ -75,9 +75,7 @@ TEST(GameTableTest, MergeDown) {
   GameTable g(CubeProp(10), gridSize, gridSize);
   g.setSlotValue(0,0,2);
   g.setSlotValue(1,0,2);
-  dumpTable(g);
   EXPECT_TRUE(g.mergeDown());
-  dumpTable(g);
 }
 
 TEST(GameTableTest, ShiftDown) {
@@ -85,8 +83,26 @@ TEST(GameTableTest, ShiftDown) {
   GameTable g(CubeProp(10), gridSize, gridSize);
   g.setSlotValue(0,0,2);
   g.setSlotValue(1,0,2);
-  dumpTable(g);
   EXPECT_TRUE(g.shiftDown());
+}
+
+TEST(GameTableTest, MergeUp) {
+  const int gridSize = 4;
+  GameTable g(CubeProp(10), gridSize, gridSize);
+  g.setSlotValue(0,0,2);
+  g.setSlotValue(1,0,2);
+  dumpTable(g);
+  EXPECT_TRUE(g.mergeUp());
+  dumpTable(g);
+}
+
+TEST(GameTableTest, ShiftUp) {
+  const int gridSize = 4;
+  GameTable g(CubeProp(10), gridSize, gridSize);
+  g.setSlotValue(0,0,2);
+  g.setSlotValue(2,0,2);
+  dumpTable(g);
+  EXPECT_TRUE(g.shiftUp());
   dumpTable(g);
 }
 

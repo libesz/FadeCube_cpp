@@ -3,6 +3,7 @@
 	<name>cube_2048</name>
 	<comment></comment>
 	<projects>
+		<project>cube_lib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
