@@ -310,7 +310,7 @@ bool GameTable::shiftDown() {
   for (i = 0; i < gridX; i++) {
 // Find the last free tile in the column.
     k = gridY - 1;
-    while (k >= 0 && slots[k][i]) {
+    while (k > 0 && slots[k][i]) {
       k--;
     }
 
@@ -403,7 +403,7 @@ bool GameTable::shiftRight() {
   for (i = 0; i < gridX; i++) {
 // Find the last free tile in the row.
     k = gridY - 1;
-    while (k >= 0 && slots[i][k]) {
+    while (k > 0 && slots[i][k]) {
       k--;
     }
 
