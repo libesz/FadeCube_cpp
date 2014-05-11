@@ -11,13 +11,12 @@
 namespace FadeCube {
 
 TimerClockSource::TimerClockSource(int newSleepTime,
-                                   TimerClockSourceExitCondition *newCond):
-                                   sleepTime(newSleepTime),
-                                   cond(newCond) {
+    TimerClockSourceExitCondition *newCond) :
+    sleepTime(newSleepTime), cond(newCond) {
 }
 
 void TimerClockSource::loop() {
-  while(!cond->cond()){
+  while (!cond->cond()) {
     update();
     usleep(sleepTime);
   }

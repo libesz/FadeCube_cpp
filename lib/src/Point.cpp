@@ -17,45 +17,45 @@ Point::~Point() {
 	// TODO Auto-generated destructor stub
 }
 
-} /* namespace FadeCube */
-
-unsigned char FadeCube::Point::getBr() const {
+unsigned char Point::getBr() const {
 	return br;
 }
 
-void FadeCube::Point::setBr(unsigned char br) {
+void Point::setBr(unsigned char br) {
 	this->br = br;
 }
 
-int FadeCube::Point::getX() const {
+int Point::getX() const {
 	return x;
 }
 
-void FadeCube::Point::setX(int x) {
+void Point::setX(int x) {
 	this->x = x;
 }
 
-int FadeCube::Point::getY() const {
+int Point::getY() const {
 	return y;
 }
 
-void FadeCube::Point::setY(int y) {
+void Point::setY(int y) {
 	this->y = y;
 }
 
-int FadeCube::Point::getZ() const {
+int Point::getZ() const {
 	return z;
 }
 
-void FadeCube::Point::setZ(int z) {
+void Point::setZ(int z) {
 	this->z = z;
 }
 
-bool FadeCube::Point::operator ==(const Point& theOther) {
+bool Point::operator ==(const Point& theOther) {
 	return (x == theOther.x) && (y == theOther.y) && (z == theOther.z);
 }
 
-std::ostream& FadeCube::operator <<(std::ostream &out, const Point& point) {
+std::ostream& operator <<(std::ostream &out, const Point& point) {
   out << "x: " << point.getX() << ", y: " << point.getY() << ", z: " << point.getZ();
 	return out;
 }
+
+} /* namespace FadeCube */
