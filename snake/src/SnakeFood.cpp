@@ -12,9 +12,9 @@
 namespace FadeCube {
 
 void SnakeFood::createFood() {
-  std::uniform_int_distribution<int> genX(0, cubeProp.getSpaceX());
-  std::uniform_int_distribution<int> genY(0, cubeProp.getSpaceY());
-  std::uniform_int_distribution<int> genZ(0, cubeProp.getSpaceZ());
+  std::uniform_int_distribution<int> genX(0, cubeProp.getSpaceX()-1);
+  std::uniform_int_distribution<int> genY(0, cubeProp.getSpaceY()-1);
+  std::uniform_int_distribution<int> genZ(0, cubeProp.getSpaceZ()-1);
   foodPosition.setX(genX(rng));
   foodPosition.setY(genY(rng));
   foodPosition.setZ(genZ(rng));
@@ -39,6 +39,10 @@ const std::vector<Point> SnakeFood::render() const {
 
 void SnakeFood::toogleInvisible() {
   invisible = !invisible;
+}
+
+Point SnakeFood::get() {
+  return foodPosition;
 }
 
 void SnakeFood::tick() {
