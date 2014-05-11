@@ -9,6 +9,7 @@ Contents:
 ---------
 * lib - library for scheduling and rendering animations, handling keyboard, etc.
 * snake - 3D snake game
+* 2048 - 2048 game
 
 Details about the project: http://libesz.digitaltrip.hu
 
