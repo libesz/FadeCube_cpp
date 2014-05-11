@@ -77,7 +77,7 @@
 namespace FadeCube {
 
 GameTable::GameTable(CubeProp newCubeProp, int newGridX, int newGridY) :
-    cubeProp(newCubeProp), gridX(newGridX), gridY(newGridY) {
+    cubeProp(newCubeProp), gridX(newGridX), gridY(newGridY), freePlaces(0) {
   slots.resize(gridX);
   for (int i = 0; i < gridX; i++) {
     slots[i].resize(gridY);
@@ -119,6 +119,8 @@ void GameTable::generateAtRandomEmptyPlace() {
 
   if (!emptySlots.size())
     throw std::runtime_error("no free place");
+
+  freePlaces = emptySlots.size()-1;
   std::uniform_int_distribution<int> genPlace(0, emptySlots.size() - 1);
   std::lock_guard<std::mutex> lock(sLock);
   *emptySlots[genPlace(rng)] = validValues[0];
@@ -419,6 +421,11 @@ bool GameTable::shiftRight() {
 
 // Return move status.
   return valid;
+}
+
+
+int GameTable::getFreePlaces() const {
+  return freePlaces;
 }
 
 } /* namespace FadeCube */

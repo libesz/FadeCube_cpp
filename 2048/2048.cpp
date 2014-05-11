@@ -22,10 +22,11 @@
 using namespace FadeCube;
 
 class GameExitCondition: public TimerClockSourceExitCondition {
+  GameTable &table;
 public:
-  GameExitCondition() {}
+  GameExitCondition(GameTable &newTable): table(newTable) {}
   bool cond() {
-    return false;
+    return table.getFreePlaces() == 0;
   }
 };
 
@@ -47,10 +48,11 @@ int main( int argc, char **argv ) {
   KeyboardInput k(c);
   std::thread userInput(&KeyboardInput::loop, &k);
 
-  GameExitCondition a;
+  GameExitCondition a(t);
   TimerClockSource clock(250000, &a);
   clock.add(&renderer);
   clock.loop();
   k.cancel();
   userInput.join();
+  renderer.draw();
 }

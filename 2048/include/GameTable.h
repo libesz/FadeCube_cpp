@@ -24,6 +24,7 @@ class GameTable {
   std::mt19937 rng;
   mutable std::mutex sLock;
   const std::array<int, 11> validValues{{2,4,8,16,32,64,128,256,512,1024,2048}};
+  int freePlaces;
   void checkValue(int value);
 
 public:
@@ -42,6 +43,7 @@ public:
   bool shiftRight();
   int getGridX() const;
   int getGridY() const;
+  int getFreePlaces() const;
 };
 
 } /* namespace FadeCube */
