@@ -19,6 +19,7 @@
 #include <vector>
 #include <unistd.h>
 #include <thread>
+#include <iostream>
 
 using namespace FadeCube;
 
@@ -57,6 +58,7 @@ int main( int argc, char **argv ) {
   clock.add(&c);
   clock.add(&renderer);
   clock.loop();
+  std::cout << c.getScore() << std::endl;
   k.cancel();
   userInput.join();
 }

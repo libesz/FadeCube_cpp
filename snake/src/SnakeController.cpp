@@ -10,17 +10,26 @@
 namespace FadeCube {
 
 SnakeController::SnakeController(Snake &newSnake, SnakeFood &newSnakeFood):
-                                 snake(newSnake), snakeFood(newSnakeFood){
+                                 snake(newSnake), snakeFood(newSnakeFood),
+                                 score(0) {
 }
 
 SnakeController::~SnakeController() {
   // TODO Auto-generated destructor stub
 }
 
+unsigned SnakeController::getScore() const {
+	return score;
+}
+
 void SnakeController::tick() {
-  if(snake.getHead() == snakeFood.render()[0]) {
+  if(snake.getHead() == snakeFood.get()) {
     snake.setSize(snake.getSize()+1);
     snakeFood.tick();
+    score += 10;
+#if(DEBUG)
+    std::cout << "Got point at: " << snakeFood.get() << std::endl;
+#endif
   }
   snakeFood.toogleInvisible();
 }

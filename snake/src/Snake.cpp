@@ -13,11 +13,12 @@
 namespace FadeCube {
 
 Snake::Snake(const CubeProp newCubeProp, int newSize) :
-             cubeProp(newCubeProp), d(Direction::FORWARD),
+             cubeProp(newCubeProp), lastDirection(Direction::FORWARD),
+             nextDirection(Direction::FORWARD),
              size(newSize), lastMoveResult(MoveResult::OK) {
   checkInitValues();
 #if ( DEBUG )
-  std::cout << "start: " << d << std::endl;
+  std::cout << "start: " << lastDirection << std::endl;
 #endif
 }
 
@@ -43,7 +44,7 @@ Snake::MoveResult Snake::move() {
   auto oldHead = body.back();
   Point newHead(oldHead);
 #if ( DEBUG )
-  std::cout << "move: " << d << std::endl;
+  std::cout << "move: " << lastDirection << std::endl;
 #endif
   switch (getDirection()) {
   case Direction::FORWARD:
@@ -68,6 +69,8 @@ Snake::MoveResult Snake::move() {
     break;
   }
 
+  storeDirection();
+
   if (newHead.getX() < 0 || newHead.getX() >= cubeProp.getSpaceX()
    || newHead.getY() < 0 || newHead.getY() >= cubeProp.getSpaceY()
    || newHead.getZ() < 0 || newHead.getZ() >= cubeProp.getSpaceZ()) {
@@ -89,20 +92,20 @@ Snake::MoveResult Snake::move() {
 void Snake::setDirection(Direction newD) {
   std::lock_guard<std::mutex> lock(dLock);
 #if ( DEBUG )
-  std::cout << "setDirection old: " << d << std::endl;
+  std::cout << "setDirection old: " << lastDirection << std::endl;
   std::cout << "setDirection new: " << newD << std::endl;
 #endif
 
-  if ((newD == Direction::FORWARD  && d == Direction::BACKWARD)
-   || (newD == Direction::BACKWARD && d == Direction::FORWARD)
-   || (newD == Direction::LEFT     && d == Direction::RIGHT)
-   || (newD == Direction::RIGHT    && d == Direction::LEFT)
-   || (newD == Direction::UP       && d == Direction::DOWN)
-   || (newD == Direction::DOWN     && d == Direction::UP)
+  if ((newD == Direction::FORWARD  && lastDirection == Direction::BACKWARD)
+   || (newD == Direction::BACKWARD && lastDirection == Direction::FORWARD)
+   || (newD == Direction::LEFT     && lastDirection == Direction::RIGHT)
+   || (newD == Direction::RIGHT    && lastDirection == Direction::LEFT)
+   || (newD == Direction::UP       && lastDirection == Direction::DOWN)
+   || (newD == Direction::DOWN     && lastDirection == Direction::UP)
    || (newD == Direction::UNKNOWN)) {
     return;
   }
-  d = newD;
+  nextDirection = newD;
 }
 
 void Snake::checkInitValues() {
@@ -130,7 +133,12 @@ unsigned int FadeCube::Snake::getSize() const {
 
 FadeCube::Direction FadeCube::Snake::getDirection() const {
   std::lock_guard<std::mutex> lock(dLock);
-  return d;
+  return nextDirection;
+}
+
+void FadeCube::Snake::storeDirection() {
+  std::lock_guard<std::mutex> lock(dLock);
+   lastDirection = nextDirection;
 }
 
 void FadeCube::Snake::setSize(unsigned int size) {

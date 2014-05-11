@@ -25,7 +25,8 @@ public:
 private:
   CubeProp cubeProp;
   std::vector<Point> body;
-  Direction d;
+  Direction lastDirection;
+  Direction nextDirection;
   mutable std::mutex dLock;
   unsigned int size;
   MoveResult lastMoveResult;
@@ -44,6 +45,7 @@ public:
   unsigned int getSize() const;
   void setSize(unsigned int size);
   Direction getDirection() const;
+  void storeDirection();
 };
 
 } /* namespace FadeCube */

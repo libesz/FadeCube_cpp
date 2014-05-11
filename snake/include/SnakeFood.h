@@ -28,6 +28,7 @@ public:
   virtual ~SnakeFood();
   const std::vector<Point> render() const;
   void toogleInvisible();
+  Point get();
   void tick();
 };
 

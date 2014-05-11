@@ -17,10 +17,12 @@ namespace FadeCube {
 class SnakeController: public Schedulable {
   Snake &snake;
   SnakeFood &snakeFood;
+  unsigned score;
 public:
   SnakeController(Snake &newSnake, SnakeFood &newSnakeFood);
   virtual ~SnakeController();
   void tick();
+  unsigned getScore() const;
 };
 
 } /* namespace FadeCube */
