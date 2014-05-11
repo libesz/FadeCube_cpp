@@ -8,6 +8,8 @@
 #ifndef POINT_H_
 #define POINT_H_
 
+#include <iostream>
+
 namespace FadeCube {
 
 class Point {
@@ -28,6 +30,7 @@ public:
 	void setZ(int z);
 	bool operator==(const Point &theOther);
 };
+std::ostream& operator<<(std::ostream &out, const Point &point);
 
 } /* namespace FadeCube */
 

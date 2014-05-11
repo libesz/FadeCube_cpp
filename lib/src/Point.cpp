@@ -54,3 +54,8 @@ void FadeCube::Point::setZ(int z) {
 bool FadeCube::Point::operator ==(const Point& theOther) {
 	return (x == theOther.x) && (y == theOther.y) && (z == theOther.z);
 }
+
+std::ostream& FadeCube::operator <<(std::ostream &out, const Point& point) {
+  out << "x: " << point.getX() << ", y: " << point.getY() << ", z: " << point.getZ();
+	return out;
+}
