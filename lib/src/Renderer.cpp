@@ -11,7 +11,7 @@
 
 namespace FadeCube {
 
-Renderer::Renderer(Display* newD): d(newD) {
+Renderer::Renderer(Display &newD): d(newD) {
 }
 
 void Renderer::draw() const {
@@ -20,7 +20,7 @@ void Renderer::draw() const {
     std::vector<Point> temp = o->render();
     result.insert(result.end(), temp.begin(), temp.end());
   }
-  d->draw(result);
+  d.draw(result);
 }
 
 void Renderer::tick() {

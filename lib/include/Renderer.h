@@ -16,10 +16,10 @@
 namespace FadeCube {
 
 class Renderer: public Schedulable {
-  Display *d;
+  Display &d;
   std::vector<Renderable *> objects;
 public:
-  Renderer(Display* newD);
+  Renderer(Display &newD);
   void add(Renderable *object);
   void draw() const;
   void tick();
