@@ -10,15 +10,11 @@
 namespace FadeCube {
 
 GameController::GameController(GameTable &newTable) :
-    table(newTable), gameOver(false) {
+    table(newTable) {
 }
 
 GameController::~GameController() {
   // TODO Auto-generated destructor stub
-}
-
-bool GameController::isGameOver() const {
-  return gameOver;
 }
 
 void GameController::setDirection(Direction d) {
@@ -45,8 +41,6 @@ void GameController::setDirection(Direction d) {
   }
   if(result)
     table.generateAtRandomEmptyPlace();
-  else if(!table.getFreePlaces())
-    gameOver = true;
 }
 
 } /* namespace FadeCube */

@@ -16,6 +16,12 @@
 
 namespace FadeCube {
 
+enum class GameResult {
+  UNKNOWN,
+  WIN,
+  LOSE
+};
+
 class GameTable {
   CubeProp cubeProp;
   int gridX;
@@ -46,7 +52,7 @@ public:
   int getGridY() const;
   int getFreePlaces() const;
   int getScore() const;
-  bool isGameOver() const;
+  GameResult boardDone() const;
 };
 
 } /* namespace FadeCube */

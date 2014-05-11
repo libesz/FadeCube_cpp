@@ -77,8 +77,8 @@
 namespace FadeCube {
 
 GameTable::GameTable(CubeProp newCubeProp, int newGridX, int newGridY) :
-    cubeProp(newCubeProp), gridX(newGridX), gridY(newGridY), freePlaces(0),
-    score(0) {
+    cubeProp(newCubeProp), gridX(newGridX), gridY(newGridY), freePlaces(0), score(
+        0) {
   slots.resize(gridX);
   for (int i = 0; i < gridX; i++) {
     slots[i].resize(gridY);
@@ -121,7 +121,7 @@ void GameTable::generateAtRandomEmptyPlace() {
   if (!emptySlots.size())
     throw std::runtime_error("no free place");
 
-  freePlaces = emptySlots.size()-1;
+  freePlaces = emptySlots.size() - 1;
   std::uniform_int_distribution<int> genPlace(0, emptySlots.size() - 1);
   std::lock_guard<std::mutex> lock(sLock);
   *emptySlots[genPlace(rng)] = validValues[0];
@@ -138,6 +138,46 @@ int GameTable::getGridY() const {
 /* merge functions are borrowed from clinew, thanks for it!
  * https://github.com/clinew/2048
  */
+
+GameResult GameTable::boardDone() const {
+  int i;
+  int j;
+  int k;
+
+// Check for zeroes or winning number.
+  for (i = 0; i < gridX; i++) {
+    for (j = 0; j < gridY; j++) {
+      if (!slots[i][j]) {
+        return GameResult::UNKNOWN;
+      } else if (slots[i][j] == validValues.back()) {
+        return GameResult::WIN;
+      }
+    }
+  }
+
+// Check for possible horizontal merge.
+  for (i = 0; i < gridX; i++) {
+    j = -1;
+    while ((k = ++j + 1) < gridY) {
+      if (slots[i][j] == slots[i][k]) {
+        return GameResult::UNKNOWN;
+      }
+    }
+  }
+
+// Check for possible verical merge.
+  for (i = 0; i < gridY; i++) {
+    j = -1;
+    while ((k = ++j + 1) < gridX) {
+      if (slots[j][i] == slots[k][i]) {
+        return GameResult::UNKNOWN;
+      }
+    }
+  }
+
+// No possible merges.
+  return GameResult::LOSE;
+}
 
 bool GameTable::mergeDown() {
   std::lock_guard<std::mutex> lock(sLock);
