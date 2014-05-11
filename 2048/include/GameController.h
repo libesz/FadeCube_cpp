@@ -15,10 +15,12 @@ namespace FadeCube {
 
 class GameController: public Controllable {
   GameTable &table;
+  bool gameOver;
 public:
   GameController(GameTable &newTable);
   virtual ~GameController();
   void setDirection(Direction newD);
+  bool isGameOver() const;
 };
 
 } /* namespace FadeCube */

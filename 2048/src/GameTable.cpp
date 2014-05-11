@@ -77,7 +77,8 @@
 namespace FadeCube {
 
 GameTable::GameTable(CubeProp newCubeProp, int newGridX, int newGridY) :
-    cubeProp(newCubeProp), gridX(newGridX), gridY(newGridY), freePlaces(0), score(0) {
+    cubeProp(newCubeProp), gridX(newGridX), gridY(newGridY), freePlaces(0),
+    score(0) {
   slots.resize(gridX);
   for (int i = 0; i < gridX; i++) {
     slots[i].resize(gridY);

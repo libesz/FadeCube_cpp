@@ -46,6 +46,7 @@ public:
   int getGridY() const;
   int getFreePlaces() const;
   int getScore() const;
+  bool isGameOver() const;
 };
 
 } /* namespace FadeCube */
