@@ -43,7 +43,7 @@ int main( int argc, char **argv ) {
   CubeDisplay d("192.168.1.99", 1125);
   //DisplayDumper d;
 
-  Renderer renderer(&d);
+  Renderer renderer(d);
   renderer.add(&s);
   renderer.add(&f);
 
