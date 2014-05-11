@@ -76,6 +76,8 @@
 
 namespace FadeCube {
 
+const std::array<int, 11> GameTable::validValues{{2,4,8,16,32,64,128,256,512,1024,2048}};
+
 GameTable::GameTable(CubeProp newCubeProp, int newGridX, int newGridY) :
     cubeProp(newCubeProp), gridX(newGridX), gridY(newGridY), freePlaces(0), score(
         0) {
@@ -144,13 +146,20 @@ GameResult GameTable::boardDone() const {
   int j;
   int k;
 
-// Check for zeroes or winning number.
+// Check for winning number.
   for (i = 0; i < gridX; i++) {
     for (j = 0; j < gridY; j++) {
-      if (!slots[i][j]) {
-        return GameResult::UNKNOWN;
-      } else if (slots[i][j] == validValues.back()) {
+      if (slots[i][j] == validValues.back()) {
         return GameResult::WIN;
+      }
+    }
+  }
+
+//Check for zeroes
+  for (i = 0; i < gridX; i++) {
+    for (j = 0; j < gridY; j++) {
+      if(!slots[i][j]) {
+        return GameResult::UNKNOWN;
       }
     }
   }

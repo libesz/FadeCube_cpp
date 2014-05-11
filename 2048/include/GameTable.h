@@ -29,12 +29,12 @@ class GameTable {
   std::vector<std::vector<int> > slots;
   std::mt19937 rng;
   mutable std::mutex sLock;
-  const std::array<int, 11> validValues{{2,4,8,16,32,64,128,256,512,1024,2048}};
   int freePlaces;
   int score;
   void checkValue(int value);
 
 public:
+  const static std::array<int, 11> validValues;
   GameTable(CubeProp newCubeProp, int newGridX, int newGridY);
   int getSlotValue(int row, int col) const;
   void setSlotValue(int row, int col, int value);

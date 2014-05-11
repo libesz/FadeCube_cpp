@@ -6,6 +6,7 @@
  */
 
 #include <GameRenderable.h>
+#include <GameTable.h>
 
 namespace FadeCube {
 
@@ -22,6 +23,8 @@ int GameRenderable::getHeightFromValue(int value) const {
     value /= 2;
     result++;
   }
+  if(result == GameTable::validValues.size())
+    result = GameTable::validValues.size()-1;
   return result;
 }
 
