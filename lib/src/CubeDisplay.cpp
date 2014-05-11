@@ -11,6 +11,7 @@
 #include <sys/socket.h>
 #include <stdlib.h>
 #include <cstring>
+#include <sstream>
 
 namespace FadeCube {
 
@@ -54,8 +55,11 @@ void CubeDisplay::setLed( unsigned char *frame, Point p ) const {
    inner_index = 2 * ( 3 - ( index % 4 ) ); //the inner-byte index (0-3)
    index /= 4; //convert index to 0-250 range
 
-   if(index > cubeDataSize-1)
-     throw std::runtime_error("bad point coordinate");
+   if(index > cubeDataSize-1) {
+	 std::stringstream ss("bad point coordinate: ");
+	 ss << p;
+     throw std::runtime_error(ss.str());
+   }
 
    frame[ index ] &= ~( 0b00000011 << inner_index ); //set the state of the coordinate to 0
    frame[ index ] |= ( ( p.getBr() / 64 ) << inner_index ); //set the new value
