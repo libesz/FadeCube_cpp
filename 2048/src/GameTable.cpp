@@ -77,7 +77,7 @@
 namespace FadeCube {
 
 GameTable::GameTable(CubeProp newCubeProp, int newGridX, int newGridY) :
-    cubeProp(newCubeProp), gridX(newGridX), gridY(newGridY), freePlaces(0) {
+    cubeProp(newCubeProp), gridX(newGridX), gridY(newGridY), freePlaces(0), score(0) {
   slots.resize(gridX);
   for (int i = 0; i < gridX; i++) {
     slots[i].resize(gridY);
@@ -134,16 +134,19 @@ int GameTable::getGridY() const {
   return gridY;
 }
 
+/* merge functions are borrowed from clinew, thanks for it!
+ * https://github.com/clinew/2048
+ */
+
 bool GameTable::mergeDown() {
   std::lock_guard<std::mutex> lock(sLock);
 
   int i;
   int j;
   int k;
-  bool valid;
+  bool valid = false;
 
 // Merge elements downwards.
-  valid = false;
   for (i = 0; i < gridY; i++) {
     j = gridX - 1;
     while (1) {
@@ -161,6 +164,7 @@ bool GameTable::mergeDown() {
 
 // Try to merge the tiles.
       if (slots[j][i] == slots[k][i]) {
+        score += slots[k][i];
         slots[k][i] += slots[k][i];
         slots[j][i] = 0;
         j = k - 1;
@@ -182,10 +186,9 @@ bool GameTable::mergeUp() {
   int i;
   int j;
   int k;
-  bool valid;
+  bool valid = false;
 
 // Merge elements upwards.
-  valid = false;
   for (i = 0; i < gridY; i++) {
     j = 0;
     while (1) {
@@ -203,6 +206,7 @@ bool GameTable::mergeUp() {
 
 // Try to merge the tiles.
       if (slots[j][i] == slots[k][i]) {
+        score += slots[j][i];
         slots[j][i] += slots[j][i];
         slots[k][i] = 0;
         j = k + 1;
@@ -223,10 +227,9 @@ bool GameTable::mergeLeft() {
   int i;
   int j;
   int k;
-  bool valid;
+  bool valid = false;
 
 // Merge items leftwards.
-  valid = false;
   for (i = 0; i < gridX; i++) {
     j = 0;
     while (1) {
@@ -244,6 +247,7 @@ bool GameTable::mergeLeft() {
 
 // Try to merge the tiles.
       if (slots[i][j] == slots[i][k]) {
+        score += slots[i][j];
         slots[i][j] += slots[i][j];
         slots[i][k] = 0;
         j = k + 1;
@@ -264,10 +268,9 @@ bool GameTable::mergeRight() {
   int i;
   int j;
   int k;
-  bool valid;
+  bool valid = false;
 
 // Merge items rightward.
-  valid = false;
   for (i = 0; i < gridX; i++) {
     j = gridX - 1;
     while (1) {
@@ -285,6 +288,7 @@ bool GameTable::mergeRight() {
 
 // Try to merge the tiles.
       if (slots[i][j] == slots[i][k]) {
+        score += slots[i][j];
         slots[i][k] += slots[i][k];
         slots[i][j] = 0;
         j = k - 1;
@@ -305,10 +309,9 @@ bool GameTable::shiftDown() {
   int i;
   int j;
   unsigned k;
-  bool valid;
+  bool valid = false;
 
 // Shift tiles down the columns.
-  valid = false;
   for (i = 0; i < gridX; i++) {
 // Find the last free tile in the column.
     k = gridY - 1;
@@ -336,10 +339,9 @@ bool GameTable::shiftUp() {
   int i;
   int j;
   int k;
-  bool valid;
+  bool valid = false;
 
 // Shift tiles up the columns.
-  valid = false;
   for (i = 0; i < gridY; i++) {
 // Find first free tile in the column.
     k = 0;
@@ -367,10 +369,9 @@ bool GameTable::shiftLeft() {
   int i;
   int j;
   int k;
-  bool valid;
+  bool valid = false;
 
 // Shift tiles left across the rows.
-  valid = false;
   for (i = 0; i < gridX; i++) {
 // Find the first free tile in the row.
     k = 0;
@@ -398,10 +399,9 @@ bool GameTable::shiftRight() {
   int i;
   int j;
   unsigned k;
-  bool valid;
+  bool valid = false;
 
 // Shift tiles right across the rows.
-  valid = false;
   for (i = 0; i < gridX; i++) {
 // Find the last free tile in the row.
     k = gridY - 1;
@@ -423,6 +423,9 @@ bool GameTable::shiftRight() {
   return valid;
 }
 
+int GameTable::getScore() const {
+  return score;
+}
 
 int GameTable::getFreePlaces() const {
   return freePlaces;

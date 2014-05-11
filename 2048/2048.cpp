@@ -18,6 +18,7 @@
 #include <vector>
 #include <unistd.h>
 #include <thread>
+#include <iostream>
 
 using namespace FadeCube;
 
@@ -55,4 +56,5 @@ int main( int argc, char **argv ) {
   k.cancel();
   userInput.join();
   renderer.draw();
+  std::cout << t.getScore() << std::endl;
 }
