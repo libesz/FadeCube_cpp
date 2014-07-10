@@ -14,6 +14,7 @@
 #include <GameController.h>
 #include <GameTable.h>
 #include <GameRenderable.h>
+#include <GameExitCondition.h>
 
 #include <vector>
 #include <unistd.h>
@@ -21,15 +22,6 @@
 #include <iostream>
 
 using namespace FadeCube;
-
-class GameExitCondition: public TimerClockSourceExitCondition {
-  GameTable &table;
-public:
-  GameExitCondition(GameTable &newTable): table(newTable) {}
-  bool cond() {
-    return table.boardDone() != GameResult::UNKNOWN;
-  }
-};
 
 int main( int argc, char **argv ) {
   CubeProp prop(10);
