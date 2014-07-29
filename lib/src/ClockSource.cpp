@@ -10,7 +10,7 @@
 
 namespace FadeCube {
 
-ClockSource::ClockSource() {
+ClockSource::ClockSource(ClockSourceExitCondition &newCond): cond(newCond) {
   // TODO Auto-generated constructor stub
 
 }

@@ -12,17 +12,10 @@
 
 namespace FadeCube {
 
-class TimerClockSourceExitCondition {
-public:
-  virtual bool cond() = 0;
-  virtual ~TimerClockSourceExitCondition() {}
-};
-
 class TimerClockSource: public ClockSource {
   int sleepTime;
-  TimerClockSourceExitCondition *cond;
 public:
-  TimerClockSource(int newSleepTime, TimerClockSourceExitCondition *newCond);
+  TimerClockSource(int newSleepTime, ClockSourceExitCondition &newCond);
   void loop();
   virtual ~TimerClockSource();
 };

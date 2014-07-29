@@ -13,12 +13,19 @@
 
 namespace FadeCube {
 
+class ClockSourceExitCondition {
+public:
+  virtual bool cond() = 0;
+  virtual ~ClockSourceExitCondition() {}
+};
+
 class ClockSource {
 protected:
   std::vector<Schedulable *> observers;
+  ClockSourceExitCondition &cond;
   void update();
 public:
-  ClockSource();
+  ClockSource(ClockSourceExitCondition &newCond);
   void add(Schedulable *s);
   void dereg(Schedulable *s);
   virtual ~ClockSource();

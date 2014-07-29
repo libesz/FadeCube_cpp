@@ -13,7 +13,7 @@
 
 namespace FadeCube {
 
-class GameExitCondition: public TimerClockSourceExitCondition {
+class GameExitCondition: public ClockSourceExitCondition {
   GameTable &table;
 public:
   GameExitCondition(GameTable &newTable);

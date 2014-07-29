@@ -13,7 +13,8 @@
 namespace FadeCube {
   TEST(ClockSourceTest, CreateAndReg) {
     DummySchedulable sch1, sch2;
-    DummyClockSource cs;
+    DummyClockSourceExitCondition ec;
+    DummyClockSource cs(ec);
     cs.add(&sch1);
     cs.add(&sch2);
     cs.tickAll();

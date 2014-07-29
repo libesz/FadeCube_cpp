@@ -22,8 +22,16 @@ namespace FadeCube {
     }
   };
 
+  class DummyClockSourceExitCondition: public ClockSourceExitCondition {
+  public:
+    bool cond() {
+      return true;
+    }
+  };
+
   class DummyClockSource: public ClockSource {
   public:
+    DummyClockSource(DummyClockSourceExitCondition &newCond): ClockSource(newCond) {}
     void tickAll() {
       update();
     }
