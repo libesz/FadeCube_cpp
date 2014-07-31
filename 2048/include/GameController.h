@@ -10,13 +10,18 @@
 
 #include <Controllable.h>
 #include <GameTable.h>
+#include <condition_variable>
+#include <mutex>
 
 namespace FadeCube {
 
 class GameController: public Controllable {
+  std::mutex &m;
+  std::condition_variable &cv;
+  bool &ready;
   GameTable &table;
 public:
-  GameController(GameTable &newTable);
+  GameController(std::mutex &newM, std::condition_variable &newCv, bool &newReady, GameTable &newTable);
   virtual ~GameController();
   void setDirection(Direction newD);
 };

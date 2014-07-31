@@ -9,8 +9,8 @@
 
 namespace FadeCube {
 
-GameController::GameController(GameTable &newTable) :
-    table(newTable) {
+GameController::GameController(std::mutex &newM, std::condition_variable &newCv, bool &newReady, GameTable &newTable) :
+    m(newM), cv(newCv), ready(newReady), table(newTable) {
 }
 
 GameController::~GameController() {
@@ -19,6 +19,8 @@ GameController::~GameController() {
 
 void GameController::setDirection(Direction d) {
   bool result = false;
+  std::unique_lock<std::mutex> lk(m);
+
   switch (d) {
   case Direction::BACKWARD:
     result |= table.mergeDown();
@@ -39,8 +41,14 @@ void GameController::setDirection(Direction d) {
   default:
     break;
   }
-  if(result)
+  if(result) {
     table.generateAtRandomEmptyPlace();
+  }
+  lk.unlock();
+  if(result) {
+    ready = 1;
+    cv.notify_one();
+  }
 }
 
 } /* namespace FadeCube */
