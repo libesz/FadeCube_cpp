@@ -10,7 +10,7 @@
 
 namespace FadeCube {
 
-TEST(CubeDisplayTest, TestBasic) {
+TEST(CubeDisplayTest, DISABLED_TestBasic) {
   CubeDisplay d("192.168.1.99", 1125);
   std::vector<Point> p;
   p.push_back(Point(1,1,0,255));

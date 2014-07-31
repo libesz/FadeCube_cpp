@@ -25,11 +25,12 @@ public:
 private:
   CubeProp cubeProp;
   std::vector<Point> body;
-  Direction lastDirection;
-  Direction nextDirection;
+  KeyboardCommand lastDirection;
+  KeyboardCommand nextDirection;
   mutable std::mutex dLock;
   unsigned int size;
   MoveResult lastMoveResult;
+  bool exitRequested;
   Snake();
   void checkInitValues();
   MoveResult move();
@@ -37,15 +38,16 @@ public:
   Snake(const CubeProp newCubeProp, int newSize = 10);
   virtual ~Snake();
   const std::vector<Point> render() const;
-  void start(int x, int y, int z, Direction d);
+  void start(int x, int y, int z, KeyboardCommand d);
   void tick();
-  void setDirection(Direction newD);
+  void setDirection(KeyboardCommand newD);
   MoveResult getLastMoveResult();
   Point getHead() const;
   unsigned int getSize() const;
   void setSize(unsigned int size);
-  Direction getDirection() const;
+  KeyboardCommand getDirection() const;
   void storeDirection();
+  bool isExitRequested() const;
 };
 
 } /* namespace FadeCube */

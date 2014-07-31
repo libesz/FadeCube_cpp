@@ -10,25 +10,28 @@
 namespace FadeCube {
 
 #if ( DEBUG )
-std::ostream& operator<<(std::ostream &out, const Direction &d) {
+std::ostream& operator<<(std::ostream &out, const KeyboardCommand &d) {
   switch (d) {
-  case Direction::FORWARD:
+  case KeyboardCommand::FORWARD:
     out << "FORWARD";
     break;
-  case Direction::BACKWARD:
+  case KeyboardCommand::BACKWARD:
     out << "BACKWARD";
     break;
-  case Direction::LEFT:
+  case KeyboardCommand::LEFT:
     out << "LEFT";
     break;
-  case Direction::RIGHT:
+  case KeyboardCommand::RIGHT:
     out << "RIGHT";
     break;
-  case Direction::UP:
+  case KeyboardCommand::UP:
     out << "UP";
     break;
-  case Direction::DOWN:
+  case KeyboardCommand::DOWN:
     out << "DOWN";
+    break;
+  case KeyboardCommand::EXIT:
+    out << "EXIT";
     break;
   default:
     out << "UNKNOWN";

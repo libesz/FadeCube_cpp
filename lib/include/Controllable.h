@@ -12,8 +12,9 @@
 
 namespace FadeCube {
 
-enum class Direction{
+enum class KeyboardCommand{
   UNKNOWN,
+  EXIT,
   UP,
   DOWN,
   RIGHT,
@@ -23,13 +24,13 @@ enum class Direction{
 };
 
 #if ( DEBUG )
-std::ostream& operator<<(std::ostream &out, const Direction &d);
+std::ostream& operator<<(std::ostream &out, const KeyboardCommand &d);
 #endif
 
 class Controllable {
 public:
   virtual ~Controllable(){}
-  virtual void setDirection(Direction newD) = 0;
+  virtual void setDirection(KeyboardCommand newD) = 0;
 };
 
 } /* namespace FadeCube */

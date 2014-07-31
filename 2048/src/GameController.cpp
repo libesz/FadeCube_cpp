@@ -10,33 +10,40 @@
 namespace FadeCube {
 
 GameController::GameController(std::mutex &newM, std::condition_variable &newCv, bool &newReady, GameTable &newTable) :
-    m(newM), cv(newCv), ready(newReady), table(newTable) {
+    m(newM), cv(newCv), ready(newReady), table(newTable), exitRequested(false) {
 }
 
 GameController::~GameController() {
   // TODO Auto-generated destructor stub
 }
 
-void GameController::setDirection(Direction d) {
+bool GameController::isExitRequested() const {
+  return exitRequested;
+}
+
+void GameController::setDirection(KeyboardCommand d) {
   bool result = false;
   std::unique_lock<std::mutex> lk(m);
 
   switch (d) {
-  case Direction::BACKWARD:
+  case KeyboardCommand::BACKWARD:
     result |= table.mergeDown();
     result |= table.shiftDown();
     break;
-  case Direction::FORWARD:
+  case KeyboardCommand::FORWARD:
     result |= table.mergeUp();
     result |= table.shiftUp();
     break;
-  case Direction::LEFT:
+  case KeyboardCommand::LEFT:
     result |= table.mergeLeft();
     result |= table.shiftLeft();
     break;
-  case Direction::RIGHT:
+  case KeyboardCommand::RIGHT:
     result |= table.mergeRight();
     result |= table.shiftRight();
+    break;
+  case KeyboardCommand::EXIT:
+    exitRequested = true;
     break;
   default:
     break;
@@ -45,8 +52,8 @@ void GameController::setDirection(Direction d) {
     table.generateAtRandomEmptyPlace();
   }
   lk.unlock();
-  if(result) {
-    ready = 1;
+  if(result || exitRequested) {
+    ready = true;
     cv.notify_one();
   }
 }

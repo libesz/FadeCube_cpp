@@ -17,7 +17,7 @@ class KeyboardInput {
   Controllable &s;
   int cancelPipe[2];
 
-  Direction getDirectionFromChar(int ch);
+  KeyboardCommand getDirectionFromChar(int ch);
 
 public:
   KeyboardInput(Controllable &newS);

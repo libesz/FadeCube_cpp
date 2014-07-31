@@ -24,27 +24,29 @@ void KeyboardInput::cancel() {
   write(cancelPipe[1], " ", 1);
 }
 
-Direction KeyboardInput::getDirectionFromChar(int ch) {
-  Direction d = Direction::UNKNOWN;
+KeyboardCommand KeyboardInput::getDirectionFromChar(int ch) {
+  KeyboardCommand d = KeyboardCommand::UNKNOWN;
   switch (ch) {
   case 'w':
-    d = Direction::FORWARD;
+    d = KeyboardCommand::FORWARD;
     break;
   case 's':
-    d = Direction::BACKWARD;
+    d = KeyboardCommand::BACKWARD;
     break;
   case 'a':
-    d = Direction::LEFT;
+    d = KeyboardCommand::LEFT;
     break;
   case 'd':
-    d = Direction::RIGHT;
+    d = KeyboardCommand::RIGHT;
     break;
   case '\'':
-    d = Direction::UP;
+    d = KeyboardCommand::UP;
     break;
   case '/':
-    d = Direction::DOWN;
+    d = KeyboardCommand::DOWN;
     break;
+  case 27:
+    d = KeyboardCommand::EXIT;
   }
   return d;
 }

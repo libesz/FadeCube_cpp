@@ -48,7 +48,7 @@ int main( int argc, char **argv ) {
   KeyboardInput k(c);
   std::thread userInput(&KeyboardInput::loop, &k);
 
-  GameExitCondition co(t);
+  GameExitCondition co(t, c);
   CondVarClockSource clock(m, cv, ready, co);
   clock.add(&renderer);
 

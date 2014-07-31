@@ -20,10 +20,12 @@ class GameController: public Controllable {
   std::condition_variable &cv;
   bool &ready;
   GameTable &table;
+  bool exitRequested;
 public:
   GameController(std::mutex &newM, std::condition_variable &newCv, bool &newReady, GameTable &newTable);
   virtual ~GameController();
-  void setDirection(Direction newD);
+  void setDirection(KeyboardCommand newD);
+  bool isExitRequested() const;
 };
 
 } /* namespace FadeCube */

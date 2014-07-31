@@ -9,9 +9,11 @@
 
 namespace FadeCube {
 
-GameExitCondition::GameExitCondition(GameTable &newTable): table(newTable) {}
+GameExitCondition::GameExitCondition(const GameTable &newTable,
+                                     const GameController &newController): table(newTable),
+                                                                           controller(newController) {}
 bool GameExitCondition::cond() {
-  return table.boardDone() != GameResult::UNKNOWN;
+  return ( table.boardDone() != GameResult::UNKNOWN ) || (controller.isExitRequested());
 }
 
 } /* namespace FadeCube */

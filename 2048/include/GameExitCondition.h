@@ -10,13 +10,15 @@
 
 #include <TimerClockSource.h>
 #include <GameTable.h>
+#include <GameController.h>
 
 namespace FadeCube {
 
 class GameExitCondition: public ClockSourceExitCondition {
-  GameTable &table;
+  const GameTable &table;
+  const GameController &controller;
 public:
-  GameExitCondition(GameTable &newTable);
+  GameExitCondition(const GameTable &newTable, const GameController &newController);
   bool cond();
 };
 

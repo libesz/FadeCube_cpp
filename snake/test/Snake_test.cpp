@@ -19,14 +19,14 @@ TEST(SnakeTest, TestCreateAndThrowsBeforeStarted) {
 
 TEST(SnakeTest, TestGetHead) {
   Snake s(CubeProp(10));
-  s.start(0, 0, 0, Direction::FORWARD);
+  s.start(0, 0, 0, KeyboardCommand::FORWARD);
   s.tick();
   EXPECT_TRUE(Point(0,1,0,0) == s.getHead());
 }
 
 TEST(SnakeTest, TestSizeIsOneAfterStarted) {
   Snake s(CubeProp(10));
-  s.start(0, 0, 0, Direction::FORWARD);
+  s.start(0, 0, 0, KeyboardCommand::FORWARD);
   std::vector<Point> p = s.render();
   EXPECT_EQ(1, p.size());
   EXPECT_EQ(0, p.begin()->getX());
@@ -37,7 +37,7 @@ TEST(SnakeTest, TestSizeIsOneAfterStarted) {
 
 TEST(SnakeTest, TestTailIsMoving) {
   Snake s(CubeProp(10), 2);
-  s.start(0, 0, 0, Direction::FORWARD);
+  s.start(0, 0, 0, KeyboardCommand::FORWARD);
   s.tick();
   s.tick();
   std::vector<Point> p = s.render();
@@ -55,7 +55,7 @@ TEST(SnakeTest, TestCreateThrowsWhenGivesCrazyConstParams) {
 
 TEST(SnakeTest, TestMove) {
   Snake s(CubeProp(10, 10, 10));
-  s.start(0, 0, 0, Direction::FORWARD);
+  s.start(0, 0, 0, KeyboardCommand::FORWARD);
   s.tick();
   std::vector<Point> p = s.render();
   EXPECT_EQ(2, p.size());
@@ -71,18 +71,18 @@ TEST(SnakeTest, TestDirectionChange) {
   Point p5(0,1,2,0);
   Point p6(0,0,2,0);
   Point p7(0,0,1,0);
-  s.start(0, 0, 0, Direction::FORWARD);
+  s.start(0, 0, 0, KeyboardCommand::FORWARD);
   s.tick();
-  s.setDirection(Direction::LEFT);
+  s.setDirection(KeyboardCommand::LEFT);
   s.tick();
-  s.setDirection(Direction::UP);
+  s.setDirection(KeyboardCommand::UP);
   s.tick();
   s.tick();
-  s.setDirection(Direction::RIGHT);
+  s.setDirection(KeyboardCommand::RIGHT);
   s.tick();
-  s.setDirection(Direction::BACKWARD);
+  s.setDirection(KeyboardCommand::BACKWARD);
   s.tick();
-  s.setDirection(Direction::DOWN);
+  s.setDirection(KeyboardCommand::DOWN);
   s.tick();
 
   std::vector<Point> p = s.render();
@@ -100,34 +100,34 @@ TEST(SnakeTest, TestDirectionChange) {
 
 TEST(SnakeTest, TestNothingHappensOnOppositeDirectionFB) {
   Snake s(CubeProp(3));
-  s.start(0, 0, 0, Direction::FORWARD);
+  s.start(0, 0, 0, KeyboardCommand::FORWARD);
   s.tick();
-  s.setDirection(Direction::BACKWARD);
+  s.setDirection(KeyboardCommand::BACKWARD);
   s.tick();
   EXPECT_TRUE(Point(0,2,0,0) == s.getHead());
 }
 
 TEST(SnakeTest, TestNothingHappensOnOppositeDirectionUD) {
   Snake s(CubeProp(3));
-  s.start(0, 0, 0, Direction::UP);
+  s.start(0, 0, 0, KeyboardCommand::UP);
   s.tick();
-  s.setDirection(Direction::DOWN);
+  s.setDirection(KeyboardCommand::DOWN);
   s.tick();
   EXPECT_TRUE(Point(0,0,2,0) == s.getHead());
 }
 
 TEST(SnakeTest, TestNothingHappensOnOppositeDirectionLR) {
   Snake s(CubeProp(3));
-  s.start(0, 0, 0, Direction::LEFT);
+  s.start(0, 0, 0, KeyboardCommand::LEFT);
   s.tick();
-  s.setDirection(Direction::RIGHT);
+  s.setDirection(KeyboardCommand::RIGHT);
   s.tick();
   EXPECT_TRUE(Point(2,0,0,0) == s.getHead());
 }
 
 TEST(SnakeTest, TestCrashToWall) {
   Snake s(CubeProp(3));
-  s.start(0, 0, 0, Direction::FORWARD);
+  s.start(0, 0, 0, KeyboardCommand::FORWARD);
   s.tick();
   EXPECT_EQ(Snake::MoveResult::OK, s.getLastMoveResult());
   s.tick();
@@ -138,23 +138,23 @@ TEST(SnakeTest, TestCrashToWall) {
 
 TEST(SnakeTest, TestCatchTail) {
   Snake s(CubeProp(3));
-  s.start(0, 0, 0, Direction::FORWARD);
+  s.start(0, 0, 0, KeyboardCommand::FORWARD);
   s.tick();
   EXPECT_EQ(Snake::MoveResult::OK, s.getLastMoveResult());
-  s.setDirection(Direction::UP);
+  s.setDirection(KeyboardCommand::UP);
   s.tick();
   EXPECT_EQ(Snake::MoveResult::OK, s.getLastMoveResult());
-  s.setDirection(Direction::BACKWARD);
+  s.setDirection(KeyboardCommand::BACKWARD);
   s.tick();
   EXPECT_EQ(Snake::MoveResult::OK, s.getLastMoveResult());
-  s.setDirection(Direction::DOWN);
+  s.setDirection(KeyboardCommand::DOWN);
   s.tick();
   EXPECT_EQ(Snake::MoveResult::TAIL, s.getLastMoveResult());
 }
 
 TEST(SnakeTest, TestNotMovingAfterWallReached) {
   Snake s(CubeProp(3));
-  s.start(0, 0, 0, Direction::FORWARD);
+  s.start(0, 0, 0, KeyboardCommand::FORWARD);
   s.tick();
   s.tick();
   s.tick();

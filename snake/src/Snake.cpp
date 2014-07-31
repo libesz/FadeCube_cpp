@@ -13,9 +13,10 @@
 namespace FadeCube {
 
 Snake::Snake(const CubeProp newCubeProp, int newSize) :
-             cubeProp(newCubeProp), lastDirection(Direction::FORWARD),
-             nextDirection(Direction::FORWARD),
-             size(newSize), lastMoveResult(MoveResult::OK) {
+             cubeProp(newCubeProp), lastDirection(KeyboardCommand::FORWARD),
+             nextDirection(KeyboardCommand::FORWARD),
+             size(newSize), lastMoveResult(MoveResult::OK),
+             exitRequested(false) {
   checkInitValues();
 #if ( DEBUG )
   std::cout << "start: " << lastDirection << std::endl;
@@ -32,7 +33,7 @@ const std::vector<Point> Snake::render() const {
   return body;
 }
 
-void Snake::start(int newX, int newY, int newZ, Direction newD) {
+void Snake::start(int newX, int newY, int newZ, KeyboardCommand newD) {
   setDirection(newD);
   body.push_back(Point(newX, newY, newZ, 255));
 }
@@ -47,22 +48,22 @@ Snake::MoveResult Snake::move() {
   std::cout << "move: " << lastDirection << std::endl;
 #endif
   switch (getDirection()) {
-  case Direction::FORWARD:
+  case KeyboardCommand::FORWARD:
     newHead.setY(newHead.getY() + 1);
     break;
-  case Direction::BACKWARD:
+  case KeyboardCommand::BACKWARD:
     newHead.setY(newHead.getY() - 1);
     break;
-  case Direction::LEFT:
+  case KeyboardCommand::LEFT:
     newHead.setX(newHead.getX() + 1);
     break;
-  case Direction::RIGHT:
+  case KeyboardCommand::RIGHT:
     newHead.setX(newHead.getX() - 1);
     break;
-  case Direction::UP:
+  case KeyboardCommand::UP:
     newHead.setZ(newHead.getZ() + 1);
     break;
-  case Direction::DOWN:
+  case KeyboardCommand::DOWN:
     newHead.setZ(newHead.getZ() - 1);
     break;
   default:
@@ -89,20 +90,24 @@ Snake::MoveResult Snake::move() {
   return MoveResult::OK;
 }
 
-void Snake::setDirection(Direction newD) {
+void Snake::setDirection(KeyboardCommand newD) {
   std::lock_guard<std::mutex> lock(dLock);
 #if ( DEBUG )
   std::cout << "setDirection old: " << lastDirection << std::endl;
   std::cout << "setDirection new: " << newD << std::endl;
 #endif
 
-  if ((newD == Direction::FORWARD  && lastDirection == Direction::BACKWARD)
-   || (newD == Direction::BACKWARD && lastDirection == Direction::FORWARD)
-   || (newD == Direction::LEFT     && lastDirection == Direction::RIGHT)
-   || (newD == Direction::RIGHT    && lastDirection == Direction::LEFT)
-   || (newD == Direction::UP       && lastDirection == Direction::DOWN)
-   || (newD == Direction::DOWN     && lastDirection == Direction::UP)
-   || (newD == Direction::UNKNOWN)) {
+  if ((newD == KeyboardCommand::FORWARD  && lastDirection == KeyboardCommand::BACKWARD)
+   || (newD == KeyboardCommand::BACKWARD && lastDirection == KeyboardCommand::FORWARD)
+   || (newD == KeyboardCommand::LEFT     && lastDirection == KeyboardCommand::RIGHT)
+   || (newD == KeyboardCommand::RIGHT    && lastDirection == KeyboardCommand::LEFT)
+   || (newD == KeyboardCommand::UP       && lastDirection == KeyboardCommand::DOWN)
+   || (newD == KeyboardCommand::DOWN     && lastDirection == KeyboardCommand::UP)
+   || (newD == KeyboardCommand::UNKNOWN)) {
+    return;
+  }
+  if(newD == KeyboardCommand::EXIT) {
+    exitRequested = true;
     return;
   }
   nextDirection = newD;
@@ -131,7 +136,7 @@ unsigned int FadeCube::Snake::getSize() const {
   return size;
 }
 
-FadeCube::Direction FadeCube::Snake::getDirection() const {
+FadeCube::KeyboardCommand FadeCube::Snake::getDirection() const {
   std::lock_guard<std::mutex> lock(dLock);
   return nextDirection;
 }
@@ -143,4 +148,8 @@ void FadeCube::Snake::storeDirection() {
 
 void FadeCube::Snake::setSize(unsigned int size) {
   this->size = size;
+}
+
+bool FadeCube::Snake::isExitRequested() const {
+  return exitRequested;
 }
