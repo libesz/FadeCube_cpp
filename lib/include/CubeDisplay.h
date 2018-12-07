@@ -9,7 +9,11 @@
 #define CUBEDISPLAY_H_
 
 #include <Display.h>
+#ifdef __MINGW32__
+#include <winsock2.h>
+#else
 #include <netinet/in.h>
+#endif
 #include <string>
 
 namespace FadeCube {

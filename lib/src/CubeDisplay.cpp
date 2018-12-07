@@ -7,8 +7,12 @@
 
 #include <CubeDisplay.h>
 #include <stdexcept>
+#ifdef __MINGW32__
+#include <winsock2.h>
+#else
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#endif // __MINGW32__
 #include <stdlib.h>
 #include <cstring>
 #include <sstream>
@@ -43,7 +47,7 @@ struct sockaddr_in CubeDisplay::create_sockaddr( std::string ip, unsigned short 
 }
 
 void CubeDisplay::sendFrameToCube( unsigned char *packet_payload ) const {
-  if( sendto( cubeSocket, packet_payload, cubeDataSize, 0, ( struct sockaddr * ) &cubeAddress, sizeof( cubeAddress ) ) < 0 ) {
+  if( sendto( cubeSocket, (const char *)packet_payload, cubeDataSize, 0, ( struct sockaddr * ) &cubeAddress, sizeof( cubeAddress ) ) < 0 ) {
     throw std::runtime_error("can't send data to cube");
   }
 }

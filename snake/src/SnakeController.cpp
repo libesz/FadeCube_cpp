@@ -24,7 +24,7 @@ unsigned SnakeController::getScore() const {
 
 void SnakeController::tick() {
   if(snake.getHead() == snakeFood.get()) {
-    snake.setSize(snake.getSize()+1);
+    snake.setSize(snake.getSize()+5);
     snakeFood.tick();
     score += 10;
 #if(DEBUG)

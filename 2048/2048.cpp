@@ -23,10 +23,17 @@
 #include <iostream>
 #include <condition_variable>
 #include <mutex>
+#ifdef __MINGW32__
+#include <winsock2.h>
+#endif // __MINGW32__
 
 using namespace FadeCube;
 
 int main( int argc, char **argv ) {
+#ifdef __MINGW32__
+  WSADATA WSAData;
+  WSAStartup(MAKEWORD(2,0), &WSAData);
+#endif // __MINGW32__
   CubeProp prop(10);
   const int gridSize = 4;
   GameTable t(prop, gridSize, gridSize);
@@ -61,4 +68,8 @@ int main( int argc, char **argv ) {
   userInput.join();
   renderer.draw();
   std::cout << t.getScore() << std::endl;
+
+#ifdef __MINGW32__
+  WSACleanup();
+#endif // __MINGW32__
 }

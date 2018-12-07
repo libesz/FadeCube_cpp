@@ -21,6 +21,7 @@ void DisplayDumper::draw(const std::vector<Point> data) const {
 							<< it.getZ() << ", "
 							<< it.getBr() << std::endl;
 	}
+	std::cout << std::endl;
 }
 
 } /* namespace FadeCube */

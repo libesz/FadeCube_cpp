@@ -22,9 +22,17 @@
 #include <thread>
 #include <iostream>
 
+#ifdef __MINGW32__
+#include <winsock2.h>
+#endif // __MINGW32__
+
 using namespace FadeCube;
 
 int main( int argc, char **argv ) {
+#ifdef __MINGW32__
+  WSADATA WSAData;
+  WSAStartup(MAKEWORD(2,0), &WSAData);
+#endif // __MINGW32__
   CubeProp prop(10);
   Snake s(prop);
   ClockDivider snakeDivider(1, s);
@@ -52,4 +60,8 @@ int main( int argc, char **argv ) {
   std::cout << c.getScore() << std::endl;
   k.cancel();
   userInput.join();
+
+#ifdef __MINGW32__
+  WSACleanup();
+#endif // __MINGW32__
 }
